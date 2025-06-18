@@ -1,7 +1,7 @@
 {
-    "url": "https://raw.githubusercontent.com/cyberajju/swagger-ui/main/rcredential-phisher.yaml",
+    "url": "https://raw.githubusercontent.com/cyberajju/swagger-ui/main/fake-auth-portal.yaml",
     "urls": [{
-        "url": "https://raw.githubusercontent.com/cyberajju/swagger-ui/main/rcredential-phisher.yaml",
+        "url": "https://raw.githubusercontent.com/cyberajju/swagger-ui/main/fake-auth-portal.yaml",
         "name": "CyberTechAjju"
     }]
 }
