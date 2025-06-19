@@ -1,0 +1,106 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: 👾 SYSTEM HACKED BY CYBERAJJU 👾
+  description: |
+    <div style="text-align:center; background-color:#000; color:#0f0; padding:20px; border-radius:10px; font-family:'Courier New', monospace;">
+      <h1 style="color:#ff0000; text-shadow:0 0 10px #ff0000, 0 0 20px #ff0000;">⚠️ SYSTEM COMPROMISED ⚠️</h1>
+      
+      <pre style="font-size:14px; line-height:1.2; margin:20px 0;">
+      
+      ░█████╗░██╗░░░██╗██████╗░███████╗██████╗░████████╗███████╗░█████╗░██╗░░██╗
+      ██╔══██╗╚██╗░██╔╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗██║░░██║
+      ██║░░╚═╝░╚████╔╝░██████╦╝█████╗░░██████╔╝░░░██║░░░█████╗░░██║░░╚═╝███████║
+      ██║░░██╗░░╚██╔╝░░██╔══██╗██╔══╝░░██╔══██╗░░░██║░░░██╔══╝░░██║░░██╗██╔══██║
+      ╚█████╔╝░░░██║░░░██████╦╝███████╗██║░░██║░░░██║░░░███████╗╚█████╔╝██║░░██║
+      ░╚════╝░░░░╚═╝░░░╚═════╝░╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚══════╝░╚════╝░╚═╝░░╚═╝
+      
+      ░█████╗░░░░░░██╗░░░░░██╗██╗░░░██╗
+      ██╔══██╗░░░░░██║░░░░░██║██║░░░██║
+      ███████║░░░░░██║░░░░░██║██║░░░██║
+      ██╔══██║██╗░░██║██╗░░██║██║░░░██║
+      ██║░░██║╚█████╔╝╚█████╔╝╚██████╔╝
+      ╚═╝░░╚═╝░╚════╝░░╚════╝░░╚═════╝░
+      </pre>
+      
+      <h2 style="color:#0f0; margin:20px 0; text-shadow:0 0 5px #0f0;">YOUR SWAGGER UI HAS BEEN PWNED</h2>
+      
+      <div style="background:#111; padding:15px; border-radius:5px; margin:20px auto; width:80%; border:1px solid #0f0;">
+        <div style="text-align:left; font-size:14px;">
+          <div><span style="color:#ff0000;">✓</span> <span style="color:#ffff00;">System access granted</span></div>
+          <div><span style="color:#ff0000;">✓</span> <span style="color:#ffff00;">Admin privileges acquired</span></div>
+          <div><span style="color:#ff0000;">✓</span> <span style="color:#ffff00;">API endpoints mapped</span></div>
+          <div><span style="color:#ff0000;">✓</span> <span style="color:#ffff00;">Data extraction in progress...</span></div>
+        </div>
+      </div>
+      
+      <div style="margin:30px 0; font-size:18px;">
+        <p style="color:#ff0000;">⚠️ This is a security demonstration only ⚠️</p>
+        <p style="color:#0f0;">Please secure your Swagger UI implementation</p>
+      </div>
+      
+      <div style="margin:30px 0; border-top:1px dashed #0f0; padding-top:20px;">
+        <h3 style="color:#ffff00;">FOR EDUCATIONAL PURPOSES ONLY</h3>
+        <p>This is a demonstration of UI vulnerabilities for security research and bug bounty testing</p>
+        <p style="font-size:12px; margin-top:20px;">© CyberTechAjju 2023 | Security Researcher | Bug Hunter</p>
+      </div>
+    </div>
+
+paths:
+  /security/breach:
+    get:
+      summary: Security Vulnerability Demo
+      description: |
+        <div style="background:#000; color:#0f0; padding:10px; border-radius:5px;">
+          <h3>⚠️ Critical Security Warning ⚠️</h3>
+          <p>Your Swagger UI is vulnerable to HTML injection and XSS attacks.</p>
+          <p>This is a safe demonstration with no actual malicious payloads.</p>
+        </div>
+      responses:
+        '200':
+          description: Educational demonstration
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Security warning message
+      
+  /security/remediation:
+    get:
+      summary: Security Remediation Steps
+      description: |
+        <div style="background:#000; color:#0f0; padding:10px; border-radius:5px;">
+          <h3>🛡️ How to Secure Your Swagger UI</h3>
+          <ul>
+            <li>Disable HTML rendering in descriptions</li>
+            <li>Implement proper CSP headers</li>
+            <li>Update to latest Swagger UI version</li>
+            <li>Use validation for all spec inputs</li>
+            <li>Implement authentication for API docs</li>
+          </ul>
+        </div>
+      responses:
+        '200':
+          description: Security recommendations
+          schema:
+            type: object
+            properties:
+              recommendations:
+                type: array
+                items:
+                  type: string
+                  
+  /disclaimer:
+    get:
+      summary: Educational Disclaimer
+      description: |
+        <div style="background:#000; color:#fff; padding:10px; border-radius:5px;">
+          <h3>⚖️ Legal Disclaimer</h3>
+          <p>This demonstration is for educational purposes only.</p>
+          <p>Always obtain proper authorization before security testing.</p>
+          <p>Unauthorized testing is illegal and unethical.</p>
+        </div>
+      responses:
+        '200':
+          description: Legal disclaimer 
