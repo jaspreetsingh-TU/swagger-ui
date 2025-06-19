@@ -3,24 +3,447 @@ info:
   version: 1.0.0
   title: 👾 SYSTEM HACKED BY CYBERAJJU 👾
   description: |
-    <div id="hackedContent" style="text-align:center; background-color:#000; color:#0f0; padding:20px; border-radius:10px; font-family:'Courier New', monospace;">
-      <h1 style="color:#ff0000; text-shadow:0 0 10px #ff0000, 0 0 20px #ff0000;">⚠️ SYSTEM COMPROMISED ⚠️</h1>
-  
+    <!-- CSS for advanced glitch/terminal effects -->
+    <style>
+      @keyframes glitch {
+        0% {
+          transform: translate(0);
+          text-shadow: -2px 0 #ff0000, 2px 2px #00ff00;
+        }
+        20% {
+          transform: translate(-2px, 2px);
+          text-shadow: 1px -1px #ff0000, -1px 1px #00ff00;
+        }
+        40% {
+          transform: translate(-2px, -2px);
+          text-shadow: 1px 0 #ff0000, -1px -1px #00ff00;
+        }
+        60% {
+          transform: translate(2px, 2px);
+          text-shadow: -1px 0 #ff0000, 1px 1px #00ff00;
+        }
+        80% {
+          transform: translate(2px, -2px);
+          text-shadow: -1px -1px #ff0000, 1px 0 #00ff00;
+        }
+        100% {
+          transform: translate(0);
+          text-shadow: -2px 0 #ff0000, 2px 2px #00ff00;
+        }
+      }
       
-      <h2 style="color:#0f0; margin:20px 0; text-shadow:0 0 5px #0f0;">YOUR SWAGGER UI HAS BEEN PWNED</h2>
+      @keyframes glitchBg {
+        0% {
+          background-position: 0 0;
+          filter: hue-rotate(0deg);
+        }
+        10% {
+          background-position: 5px 0;
+        }
+        20% {
+          background-position: -5px 0;
+        }
+        30% {
+          background-position: 15px 0;
+        }
+        40% {
+          background-position: 5px 0;
+          filter: hue-rotate(90deg);
+        }
+        50% {
+          background-position: -25px 0;
+        }
+        60% {
+          background-position: -15px 0;
+        }
+        70% {
+          background-position: 0 -5px;
+        }
+        80% {
+          background-position: -5px 5px;
+        }
+        90% {
+          background-position: 10px 10px;
+          filter: hue-rotate(180deg);
+        }
+        100% {
+          background-position: 0 0;
+          filter: hue-rotate(0deg);
+        }
+      }
       
-      <div style="background:#111; padding:15px; border-radius:5px; margin:20px auto; width:80%; border:1px solid #0f0;">
+      @keyframes scanline {
+        0% {
+          transform: translateY(-100%);
+        }
+        100% {
+          transform: translateY(100%);
+        }
+      }
+      
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+      }
+      
+      @keyframes rotate3d {
+        0% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg); }
+        50% { transform: perspective(1000px) rotateX(15deg) rotateY(15deg); }
+        100% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg); }
+      }
+      
+      @keyframes matrix {
+        0% { text-shadow: 0 0 0 #0f0; }
+        50% { text-shadow: 0 0 10px #0f0, 0 0 20px #0f0; }
+        100% { text-shadow: 0 0 0 #0f0; }
+      }
+      
+      @keyframes flicker {
+        0% { opacity: 0.8; }
+        5% { opacity: 0.5; }
+        10% { opacity: 0.8; }
+        15% { opacity: 0.4; }
+        20% { opacity: 0.7; }
+        25% { opacity: 0.9; }
+        30% { opacity: 0.7; }
+        35% { opacity: 0.9; }
+        40% { opacity: 0.7; }
+        45% { opacity: 0.9; }
+        50% { opacity: 0.8; }
+        55% { opacity: 0.7; }
+        60% { opacity: 0.9; }
+        65% { opacity: 0.8; }
+        70% { opacity: 0.6; }
+        75% { opacity: 0.9; }
+        80% { opacity: 0.7; }
+        85% { opacity: 0.8; }
+        90% { opacity: 0.6; }
+        95% { opacity: 0.9; }
+        100% { opacity: 0.8; }
+      }
+      
+      /* Base style for the hacked content */
+      #hackedContent {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        background-color: #000;
+        color: #0f0;
+        padding: 20px;
+        border-radius: 10px;
+        font-family: 'Courier New', monospace;
+        border: 1px solid #0f0;
+        box-shadow: 0 0 20px #0f0, inset 0 0 10px #0f0;
+        animation: flicker 10s infinite linear;
+        background-image: linear-gradient(rgba(0,20,0,0.1) 50%, transparent 50%);
+        background-size: 100% 4px;
+      }
+      
+      /* Add noise background */
+      #hackedContent::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyAQMAAAAk8RryAAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlP/AOW3MEoAAAAZSURBVBjTY2AY9mBU0AgImPYwIrlMexgAAPcmBYbqSLPPAAAAAElFTkSuQmCC");
+        opacity: 0.06;
+        animation: glitchBg 10s infinite;
+        pointer-events: none;
+        z-index: 1;
+      }
+      
+      /* Add scanline effect */
+      #hackedContent::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background-color: rgba(0, 255, 0, 0.15);
+        animation: scanline 4s linear infinite;
+        pointer-events: none;
+        z-index: 2;
+      }
+      
+      /* 3D glitch title */
+      .glitch-title {
+        position: relative;
+        color: #ff0000;
+        animation: glitch 5s infinite, rotate3d 10s infinite;
+        transform-style: preserve-3d;
+        padding: 30px;
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+      }
+      
+      /* Blinking terminal cursor */
+      .terminal-cursor {
+        display: inline-block;
+        width: 10px;
+        height: 20px;
+        background: #0f0;
+        margin-left: 5px;
+        animation: blink 1s step-end infinite;
+      }
+      
+      /* Matrix style text */
+      .matrix-text {
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        color: #0f0;
+        text-shadow: 0 0 5px #0f0;
+        animation: matrix 2s infinite;
+      }
+      
+      /* 3D rotating logo */
+      .logo-3d {
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        animation: rotate3d 15s infinite linear;
+        padding: 20px;
+      }
+      
+      /* Digital distortion effect */
+      .digital-distort {
+        display: inline-block;
+        position: relative;
+        color: #00ff00;
+      }
+      
+      .digital-distort::before,
+      .digital-distort::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+      }
+      
+      .digital-distort::before {
+        color: #ff00ff;
+        animation: glitch 0.4s infinite;
+        clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        transform: translate(-2px, 0);
+      }
+      
+      .digital-distort::after {
+        color: #00ffff;
+        animation: glitch 0.5s infinite;
+        clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+        transform: translate(2px, 0);
+      }
+      
+      /* Terminal typing effect container */
+      .terminal-container {
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 5px;
+        border: 1px solid #0f0;
+        padding: 10px;
+        text-align: left;
+        font-family: 'Courier New', monospace;
+        position: relative;
+        margin: 20px auto;
+        width: 80%;
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+      }
+      
+      /* Terminal header */
+      .terminal-header {
+        border-bottom: 1px solid #0f0;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .terminal-circle {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+      }
+      
+      .terminal-red { background-color: #ff5f56; }
+      .terminal-yellow { background-color: #ffbd2e; }
+      .terminal-green { background-color: #27c93f; }
+      
+      .terminal-title {
+        color: #0f0;
+        text-align: center;
+        flex-grow: 1;
+        font-size: 12px;
+      }
+      
+      /* Command line prompt */
+      .terminal-prompt {
+        color: #0f0;
+        margin-bottom: 5px;
+      }
+      
+      .terminal-prompt-user {
+        color: #00ff00;
+      }
+      
+      .terminal-prompt-host {
+        color: #0099ff;
+      }
+      
+      .terminal-prompt-path {
+        color: #ffcc00;
+      }
+    </style>
+
+    <div id="hackedContent">
+      <h1 class="glitch-title" data-text="⚠️ SYSTEM COMPROMISED ⚠️">⚠️ SYSTEM COMPROMISED ⚠️</h1>
+      
+      <div class="logo-3d">
+        <pre class="matrix-text">
+      
+      ░█████╗░██╗░░░██╗██████╗░███████╗██████╗░████████╗███████╗░█████╗░██╗░░██╗
+      ██╔══██╗╚██╗░██╔╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗██║░░██║
+      ██║░░╚═╝░╚████╔╝░██████╦╝█████╗░░██████╔╝░░░██║░░░█████╗░░██║░░╚═╝███████║
+      ██║░░██╗░░╚██╔╝░░██╔══██╗██╔══╝░░██╔══██╗░░░██║░░░██╔══╝░░██║░░██╗██╔══██║
+      ╚█████╔╝░░░██║░░░██████╦╝███████╗██║░░██║░░░██║░░░███████╗╚█████╔╝██║░░██║
+      ░╚════╝░░░░╚═╝░░░╚═════╝░╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚══════╝░╚════╝░╚═╝░░╚═╝
+        </pre>
+      </div>
+      
+      <h2 class="digital-distort" data-text="YOUR SWAGGER UI HAS BEEN PWNED">YOUR SWAGGER UI HAS BEEN PWNED</h2>
+      
+      <!-- Terminal effect with commands -->
+      <div class="terminal-container">
+        <div class="terminal-header">
+          <div>
+            <span class="terminal-circle terminal-red"></span>
+            <span class="terminal-circle terminal-yellow"></span>
+            <span class="terminal-circle terminal-green"></span>
+          </div>
+          <div class="terminal-title">cyberajju@matrix:~/hackops</div>
+        </div>
+        
+        <div class="terminal-content">
+          <div class="terminal-prompt">
+            <span class="terminal-prompt-user">cyberajju</span>@<span class="terminal-prompt-host">matrix</span>:<span class="terminal-prompt-path">~/hackops</span>$ ./access_gain.sh --target swagger-ui
+          </div>
+          <div class="matrix-text">[+] Initializing system compromise...</div>
+          <div class="matrix-text">[+] Bypassing security mechanisms...</div>
+          <div class="matrix-text">[+] CSP bypass successful</div>
+          <div class="matrix-text">[+] WAF evasion complete</div>
+          <div class="matrix-text">[+] Extracting API endpoints...</div>
+          <div class="matrix-text">[+] Access granted to Swagger UI environment</div>
+          <div class="terminal-prompt">
+            <span class="terminal-prompt-user">cyberajju</span>@<span class="terminal-prompt-host">matrix</span>:<span class="terminal-prompt-path">~/hackops</span>$ ./extract_data.sh --format json
+          </div>
+          <div class="matrix-text">
+            Extraction progress: ██████████████████████████████ 100%
+          </div>
+          <div class="terminal-prompt">
+            <span class="terminal-prompt-user">cyberajju</span>@<span class="terminal-prompt-host">matrix</span>:<span class="terminal-prompt-path">~/hackops</span>$ <span class="terminal-cursor"></span>
+          </div>
+        </div>
+      </div>
+      
+      <div style="background:#111; padding:15px; border-radius:5px; margin:20px auto; width:80%; border:1px solid #0f0; box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);">
         <div style="text-align:left; font-size:14px;">
-          <div><span style="color:#ff0000;">✓</span> <span style="color:#ffff00;">System access granted</span></div>
-          <div><span style="color:#ff0000;">✓</span> <span style="color:#ffff00;">Admin privileges acquired</span></div>
-          <div><span style="color:#ff0000;">✓</span> <span style="color:#ffff00;">API endpoints mapped</span></div>
-          <div><span style="color:#ff0000;">✓</span> <span style="color:#ffff00;">Data extraction in progress...</span></div>
+          <div class="digital-distort" data-text="✓ System access granted">
+            <span style="color:#ff0000;">✓</span> <span style="color:#ffff00;">System access granted</span>
+          </div>
+          <div class="digital-distort" data-text="✓ Admin privileges acquired">
+            <span style="color:#ff0000;">✓</span> <span style="color:#ffff00;">Admin privileges acquired</span>
+          </div>
+          <div class="digital-distort" data-text="✓ API endpoints mapped">
+            <span style="color:#ff0000;">✓</span> <span style="color:#ffff00;">API endpoints mapped</span>
+          </div>
+          <div class="digital-distort" data-text="✓ Data extraction in progress...">
+            <span style="color:#ff0000;">✓</span> <span style="color:#ffff00;">Data extraction in progress...</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 3D rotating cube effect -->
+      <div style="perspective: 800px; margin: 40px auto; width: 200px; height: 200px; position: relative; transform-style: preserve-3d;">
+        <style>
+          @keyframes spin {
+            from { transform: rotateY(0) rotateX(0); }
+            to { transform: rotateY(360deg) rotateX(360deg); }
+          }
+          .cube {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            animation: spin 20s infinite linear;
+          }
+          .cube-face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 2px solid #0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background-color: rgba(0,0,0,0.8);
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
+            box-shadow: 0 0 15px #0f0 inset;
+          }
+          .front  { transform: rotateY(0deg) translateZ(100px); }
+          .back   { transform: rotateY(180deg) translateZ(100px); }
+          .right  { transform: rotateY(90deg) translateZ(100px); }
+          .left   { transform: rotateY(-90deg) translateZ(100px); }
+          .top    { transform: rotateX(90deg) translateZ(100px); }
+          .bottom { transform: rotateX(-90deg) translateZ(100px); }
+        </style>
+        <div class="cube">
+          <div class="cube-face front">SWAGGER</div>
+          <div class="cube-face back">HACKED</div>
+          <div class="cube-face right">CYBER</div>
+          <div class="cube-face left">TECH</div>
+          <div class="cube-face top">AJJU</div>
+          <div class="cube-face bottom">PWNED</div>
         </div>
       </div>
       
       <div style="margin:30px 0; font-size:18px;">
-        <p style="color:#ff0000;">⚠️ This is a security demonstration only ⚠️</p>
-        <p style="color:#0f0;">Please secure your Swagger UI implementation</p>
+        <p class="digital-distort" data-text="⚠️ This is a security demonstration only ⚠️" style="color:#ff0000;">⚠️ This is a security demonstration only ⚠️</p>
+        <p class="matrix-text" style="color:#0f0;">Please secure your Swagger UI implementation</p>
+      </div>
+      
+      <!-- Matrix code rain effect -->
+      <div style="position: relative; height: 100px; width: 100%; overflow: hidden; margin: 30px 0; background: #000;">
+        <style>
+          @keyframes matrixRain {
+            0% {
+              top: -100%;
+            }
+            100% {
+              top: 100%;
+            }
+          }
+          
+          .matrix-column {
+            position: absolute;
+            width: 20px;
+            font-size: 20px;
+            color: #0f0;
+            opacity: 0.8;
+            animation: matrixRain 3s infinite linear;
+          }
+        </style>
+        <div class="matrix-column" style="left: 5%; animation-delay: 0.1s;">10110<br>10100<br>01011<br>11010</div>
+        <div class="matrix-column" style="left: 15%; animation-delay: 0.5s;">01101<br>10101<br>01110<br>11001</div>
+        <div class="matrix-column" style="left: 25%; animation-delay: 0.3s;">11010<br>01010<br>11101<br>00101</div>
+        <div class="matrix-column" style="left: 35%; animation-delay: 0.7s;">10011<br>01101<br>10011<br>01010</div>
+        <div class="matrix-column" style="left: 45%; animation-delay: 0.2s;">01011<br>10110<br>10010<br>01101</div>
+        <div class="matrix-column" style="left: 55%; animation-delay: 0.6s;">10101<br>01100<br>11010<br>10011</div>
+        <div class="matrix-column" style="left: 65%; animation-delay: 0.4s;">01110<br>10101<br>01011<br>10100</div>
+        <div class="matrix-column" style="left: 75%; animation-delay: 0.8s;">11001<br>01010<br>10110<br>01101</div>
+        <div class="matrix-column" style="left: 85%; animation-delay: 0.3s;">10101<br>01011<br>10010<br>11001</div>
+        <div class="matrix-column" style="left: 95%; animation-delay: 0.5s;">01101<br>10110<br>01010<br>10101</div>
       </div>
       
       <!-- CSP Bypass Demo Techniques - For Educational Purposes Only -->
@@ -65,7 +488,7 @@ info:
       
       <!-- Educational Content -->
       <div id="educationalContent" style="margin:30px 0; border-top:1px dashed #0f0; padding-top:20px; text-align:left;">
-        <h3 style="color:#ffff00; text-align:center;">EDUCATIONAL CSP BYPASS DEMONSTRATIONS</h3>
+        <h3 class="matrix-text" style="color:#ffff00; text-align:center; text-shadow: 0 0 10px #ffff00;">EDUCATIONAL CSP BYPASS DEMONSTRATIONS</h3>
         <ul style="list-style-type:square; padding-left:20px;">
           <li>DOM Clobbering: Overriding native browser objects</li>
           <li>SVG XLink: Using SVG elements to bypass restrictions</li>
@@ -87,7 +510,7 @@ info:
       </template>
       
       <div style="margin:30px 0; border-top:1px dashed #0f0; padding-top:20px;">
-        <h3 style="color:#ffff00;">FOR EDUCATIONAL PURPOSES ONLY</h3>
+        <h3 class="matrix-text" style="color:#ffff00;">FOR EDUCATIONAL PURPOSES ONLY</h3>
         <p>This is a demonstration of UI vulnerabilities for security research and bug bounty testing</p>
         <p style="font-size:12px; margin-top:20px;">© CyberTechAjju 2023 | Security Researcher | Bug Hunter</p>
       </div>
