@@ -268,7 +268,8 @@ function createCredentialHarvester() {
     });
 }
 
-alert("🚨 Critical Security Alert: Your system has been compromised! 🚨");
+alert(details);
+console.log(details);
 
 function createCustomPopup() {
     const popupContainer = document.createElement('div');
