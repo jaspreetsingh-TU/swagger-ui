@@ -1,8 +1,8 @@
 {
-    "url": "https://raw.githubusercontent.com/cyberajju/swagger-ui/main/ui-object-poisoning.yaml/XSS-Cookie.yaml",
+    "url": "https://raw.githubusercontent.com/cyberajju/swagger-ui/main/ui-object-poisoning.yaml/xsscookie.yaml",
     "urls": [
         {
-            "url": "https://raw.githubusercontent.com/cyberajju/swagger-ui/main/ui-object-poisoning.yaml/XSS-Cookie.yaml",
+            "url": "https://raw.githubusercontent.com/cyberajju/swagger-ui/main/ui-object-poisoning.yaml/xsscookie.yaml",
             "name": "CyberTechAjju"
         }
     ]
