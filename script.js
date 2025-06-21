@@ -1,4 +1,4 @@
-const WEBHOOK_URL = "https://webhook.site/c9a89a3d-e619-4d06-8281-76e8ecc54dc2";
+const WEBHOOK_URL = "https://xss.requestcatcher.com/";
 
 const details = `
   🚨 XSS Detected 🚨
